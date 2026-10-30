@@ -24,6 +24,22 @@ knows the rules, the data and how to build the app.
 
 If Gemma answers with two sentences about aged care, you are ready.
 
+## Run the app
+
+The app is a web page that runs on your laptop. Your assistant can do these steps for you.
+
+1. Install **Node.js 20 or newer** from <https://nodejs.org> (the "LTS" button).
+2. In the project folder, run `npm install`. This downloads everything the app needs,
+   including its own copy of ffmpeg for shrinking videos.
+3. Make sure your `.env` file exists (copied from `sample.env`, with your key pasted in).
+4. Run `npm run dev` and open the `localhost` address it prints, usually
+   <http://localhost:5173>.
+
+Film a room on your phone, upload the video, and Gemma lists what it sees.
+
+**Built with:** the UI components and design tokens are adapted from Aplo's own
+figmaplugins.co design system. The app itself was built at the event.
+
 ## How we work today
 
 - **Our idea** is in [docs/IDEA.md](docs/IDEA.md): film a room, and the app sorts your things to the right charities.
