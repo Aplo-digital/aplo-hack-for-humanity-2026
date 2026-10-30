@@ -1,0 +1,19 @@
+import type { HTMLAttributes } from "react"
+
+/**
+ * Loading placeholder with a shimmer sweep. Drop it where content will land —
+ * size it with utility classes (h-*, w-*, rounded-*). The shimmer keyframes
+ * live in globals.css (`.skeleton-shimmer`) so every loader matches.
+ */
+export function Skeleton({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      aria-hidden
+      className={`skeleton-shimmer rounded-md ${className}`}
+      {...props}
+    />
+  )
+}

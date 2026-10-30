@@ -17,3 +17,7 @@ __pycache__/
 
 # full-Australia map zips: download them, keep only the SA GeoJSON (see data/4_foundation/F12_asgs-edition3-boundaries/README.md)
 data/4_foundation/F12_asgs-edition3-boundaries/*.zip
+
+# Node and Vite
+node_modules/
+dist/
