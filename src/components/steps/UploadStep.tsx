@@ -36,7 +36,7 @@ export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
   return (
     <div className="flex flex-1 flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <h1 className={TYPE.pageTitle}>Moving out? Pass it on.</h1>
+        <h1 className={TYPE.pageTitle}>Moving out? Keep it in the loop.</h1>
         <p className={TYPE.bodyRelaxed}>
           Film a slow walk around a room. Gemma lists what it sees, you tick
           what you're giving away, and we tell you which charity takes each

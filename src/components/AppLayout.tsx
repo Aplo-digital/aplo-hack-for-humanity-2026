@@ -18,7 +18,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
         <header className="flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">
             <LogoMark />
-            <span className="font-heading text-base">Pass It On</span>
+            <span className="font-heading text-base">looped</span>
           </div>
           <Button
             variant="ghost"

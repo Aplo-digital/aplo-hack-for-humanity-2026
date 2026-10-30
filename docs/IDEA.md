@@ -1,6 +1,6 @@
 # Our idea: film your room, find where everything should go
 
-Working name: **Pass It On** (change it any time).
+Name: **Looped**. Brand guide: [docs/BRAND.md](BRAND.md).
 
 **Who it helps.** Someone moving out who wants their things to reach people who need them, not
 landfill. And the charities, who get goods they can actually use instead of items they have to

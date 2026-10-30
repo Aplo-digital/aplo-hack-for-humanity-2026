@@ -27,7 +27,7 @@ changes it, and update that file when they do.
    into `.env` themselves. Never ask for the key in chat, never print it, never commit it.
 4. Run `npm run dev` and open the localhost address it prints.
 
-## The app (Pass It On)
+## The app (Looped)
 
 A Vite + React 19 + TypeScript web app at the repo root, styled with Tailwind v4 and shadcn/ui
 (base-nova style), adapted from Aplo's figmaplugins.co design system. No login, no database:
