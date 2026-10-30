@@ -21,6 +21,11 @@ export default defineConfig([
     },
   },
   {
+    // shadcn components export their variant helpers next to the component.
+    files: ["src/components/ui/**/*.tsx"],
+    rules: { "react-refresh/only-export-components": "off" },
+  },
+  {
     files: ["server/**/*.ts", "vite.config.ts"],
     languageOptions: { globals: globals.node },
   },

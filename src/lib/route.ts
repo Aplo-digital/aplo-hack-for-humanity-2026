@@ -28,7 +28,7 @@ function destinationFor(item: Item, rules: CharityRule[]): Destination {
 }
 
 // A charity's notes differ per category, so each charity and category pair gets its own group.
-function groupKey(destination: Destination): string {
+export function groupKey(destination: Destination): string {
   return destination.kind === "charity"
     ? `charity:${destination.charity}:${destination.rule.category}`
     : `${destination.kind}:${destination.reason}`

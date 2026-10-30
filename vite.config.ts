@@ -74,6 +74,8 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, __dirname, "")
   return {
     plugins: [react(), tailwindcss(), gemmaApi(env.GEMINI_API_KEY)],
+    // One small app bundle; the default 500 kB warning is noise here.
+    build: { chunkSizeWarningLimit: 1000 },
     resolve: {
       alias: {
         "@": path.resolve(__dirname, "./src"),
