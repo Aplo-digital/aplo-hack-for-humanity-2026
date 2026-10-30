@@ -1,11 +1,18 @@
 import type { ReactNode } from "react"
-import { Moon, Sun } from "lucide-react"
+import { ArrowLeft, Moon, Sun } from "lucide-react"
 import { useTheme } from "@/components/theme-provider"
 import { Button } from "@/components/ui/button"
-import { ICON, TYPE } from "@/components/design-system"
+import { ICON } from "@/components/design-system"
 import { cn } from "@/lib/utils"
 
-export function AppLayout({ children }: { children: ReactNode }) {
+export function AppLayout({
+  onBack,
+  children,
+}: {
+  /** Back arrow at the top left. Hidden when omitted. */
+  onBack?: () => void
+  children: ReactNode
+}) {
   const { theme, setTheme } = useTheme()
   const isDark =
     theme === "dark" ||
@@ -17,6 +24,17 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="mx-auto flex min-h-dvh max-w-md flex-col px-5 pt-[env(safe-area-inset-top)]">
         <header className="flex h-14 items-center justify-between">
           <div className="flex items-center gap-2">
+            {onBack && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="-ml-2"
+                onClick={onBack}
+                aria-label="Back"
+              >
+                <ArrowLeft size={ICON.md} />
+              </Button>
+            )}
             <LogoMark />
             <span className="font-heading text-base">looped</span>
           </div>
@@ -30,14 +48,9 @@ export function AppLayout({ children }: { children: ReactNode }) {
           </Button>
         </header>
 
-        <main className="flex flex-1 flex-col pt-2">{children}</main>
-
-        <footer className="pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
-          <p className={TYPE.caption}>
-            Built at Hack for Humanity Adelaide 2026. Charity rules come from
-            each charity's own donation guide.
-          </p>
-        </footer>
+        <main className="flex flex-1 flex-col pt-2 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
+          {children}
+        </main>
       </div>
     </div>
   )

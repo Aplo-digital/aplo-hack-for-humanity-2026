@@ -20,8 +20,9 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { ICON, TYPE } from "@/components/design-system"
 import { cn } from "@/lib/utils"
+import { DEADLINE_LABELS, SITUATION_LABELS } from "@/lib/labels"
 import { givingItems } from "@/lib/rooms"
-import type { Room } from "@/lib/types"
+import type { ClearOut, Room } from "@/lib/types"
 
 const ROOM_ICONS: Record<string, LucideIcon> = {
   "living-room": Sofa,
@@ -38,12 +39,16 @@ const plural = (count: number) => `${count} ${count === 1 ? "thing" : "things"}`
 
 export function RoomsStep({
   rooms,
+  clearOut,
+  onChangeClearOut,
   onOpenRoom,
   onAddRoom,
   onMakePlan,
   onClearAll,
 }: {
   rooms: Room[]
+  clearOut: ClearOut
+  onChangeClearOut: () => void
   onOpenRoom: (room: Room) => void
   onAddRoom: (name: string) => void
   onMakePlan: () => void
@@ -52,6 +57,14 @@ export function RoomsStep({
   const [newRoom, setNewRoom] = useState("")
   const doneCount = rooms.filter((room) => room.items).length
   const givingCount = givingItems(rooms).length
+  const situation = clearOut.situation
+    ? SITUATION_LABELS[clearOut.situation]
+    : null
+  const deadline = clearOut.deadline
+    ? clearOut.deadline === "no_rush"
+      ? "There's no set date."
+      : `The house needs to be empty ${DEADLINE_LABELS[clearOut.deadline].toLowerCase()}.`
+    : null
 
   function addRoom(event: FormEvent) {
     event.preventDefault()
@@ -63,21 +76,35 @@ export function RoomsStep({
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h1 className={TYPE.pageTitle}>Pick a room</h1>
+        <h1 className={TYPE.pageTitle}>Choose a room</h1>
         <p className={TYPE.bodyRelaxed}>
-          Do one room at a time. Film or photograph it, check the list, then
-          come back here for the next one.
+          Start with any room. When it's done, come back here for the next one.
         </p>
         {doneCount > 0 && (
           <p className={TYPE.caption}>
-            {doneCount} of {rooms.length} rooms done · {plural(givingCount)} to
-            give away
+            {doneCount} {doneCount === 1 ? "room" : "rooms"} done.{" "}
+            {plural(givingCount)} to give away.
           </p>
         )}
+        {(situation || deadline) && (
+          <div className="flex flex-col gap-1">
+            {situation && <p className="text-base">{situation}</p>}
+            {deadline && <p className={TYPE.caption}>{deadline}</p>}
+          </div>
+        )}
+        <button
+          type="button"
+          onClick={onChangeClearOut}
+          className="self-start text-base font-medium text-pine underline-offset-4 hover:underline"
+        >
+          {situation || deadline
+            ? "Change these details"
+            : "Add details about this clear-out"}
+        </button>
       </div>
 
       <ul className="grid grid-cols-2 gap-3">
-        {rooms.map((room, index) => {
+        {rooms.map((room) => {
           const Icon = ROOM_ICONS[room.id] ?? House
           const giving = room.items?.filter((item) => item.giveAway).length
           return (
@@ -87,11 +114,8 @@ export function RoomsStep({
                 onClick={() => onOpenRoom(room)}
                 className={cn(
                   "relative flex h-full w-full flex-col gap-3 rounded-2xl p-4 text-left transition-transform active:scale-[0.98]",
-                  room.items
-                    ? "bg-card ring-2 ring-pine"
-                    : index % 4 === 1 || index % 4 === 2
-                      ? "bg-peach"
-                      : "bg-sage"
+                  "bg-sage",
+                  room.items && "ring-2 ring-pine"
                 )}
               >
                 <Icon size={ICON.xl} strokeWidth={1.5} aria-hidden />
@@ -103,11 +127,11 @@ export function RoomsStep({
                   />
                 )}
                 <span className="flex flex-col">
-                  <span className="text-sm font-medium">{room.name}</span>
-                  <span className="text-xs text-foreground/65">
+                  <span className="text-base font-medium">{room.name}</span>
+                  <span className="text-base text-muted-foreground">
                     {giving === undefined
                       ? "Tap to start"
-                      : `${plural(giving)} to give`}
+                      : `${giving} to give away`}
                   </span>
                 </span>
               </button>
@@ -123,7 +147,7 @@ export function RoomsStep({
         <Input
           id="new-room"
           value={newRoom}
-          placeholder="Another room, like Bedroom 2"
+          placeholder="Add a room, like Bedroom 2"
           className="h-10 rounded-full px-4"
           onChange={(event) => setNewRoom(event.target.value)}
         />
@@ -141,13 +165,13 @@ export function RoomsStep({
           onClick={onMakePlan}
         >
           {givingCount === 0
-            ? "Film a room to start"
-            : `Find homes for ${plural(givingCount)}`}
+            ? "Do a room first"
+            : `Find a home for ${plural(givingCount)}`}
           {givingCount > 0 && <ArrowRight size={ICON.md} />}
         </Button>
         {doneCount > 0 && (
           <Button variant="ghost" onClick={onClearAll}>
-            Clear all rooms and start over
+            Start over
           </Button>
         )}
       </ActionBar>

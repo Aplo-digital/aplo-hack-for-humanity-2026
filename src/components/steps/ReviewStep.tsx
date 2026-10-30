@@ -1,36 +1,26 @@
-import { useState, type ReactNode } from "react"
+import { useState } from "react"
 import {
   Armchair,
   BedDouble,
-  Check,
   BookOpen,
+  Camera,
+  Check,
   CircleHelp,
   CookingPot,
   Lamp,
   Monitor,
   Plus,
   Puzzle,
-  RotateCcw,
   Shirt,
   type LucideIcon,
 } from "lucide-react"
 import { ActionBar } from "@/components/AppLayout"
+import { ReviewItemCard } from "@/components/steps/ReviewItemCard"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { ICON, TYPE } from "@/components/design-system"
 import { cn } from "@/lib/utils"
-import { CATEGORY_LABELS, CONDITION_LABELS } from "@/lib/labels"
-import { CATEGORIES, CONDITIONS, type Category, type Item } from "@/lib/types"
+import { CATEGORY_LABELS } from "@/lib/labels"
+import { CATEGORIES, type Category, type Item } from "@/lib/types"
 
 const CATEGORY_ICONS: Record<Category, LucideIcon> = {
   furniture: Armchair,
@@ -50,22 +40,34 @@ export function ReviewStep({
   roomName,
   initialItems,
   onSave,
-  onFilmAgain,
-  onBack,
+  onAddPhotos,
 }: {
   roomName: string
   initialItems: Item[]
   onSave: (items: Item[]) => void
-  onFilmAgain: () => void
-  onBack: () => void
+  onAddPhotos: () => void
 }) {
   const [items, setItems] = useState(initialItems)
-  const named = items.filter((item) => item.name.trim())
+  const [confirmed, setConfirmed] = useState<ReadonlySet<string>>(new Set())
 
   function update(id: string, patch: Partial<Item>) {
     setItems((current) =>
       current.map((item) => (item.id === id ? { ...item, ...patch } : item))
     )
+  }
+
+  function setItemConfirmed(id: string, isConfirmed: boolean) {
+    setConfirmed((current) => {
+      const next = new Set(current)
+      if (isConfirmed) next.add(id)
+      else next.delete(id)
+      return next
+    })
+  }
+
+  function remove(id: string) {
+    setItems((current) => current.filter((item) => item.id !== id))
+    setItemConfirmed(id, false)
   }
 
   function addItem() {
@@ -82,48 +84,60 @@ export function ReviewStep({
     ])
   }
 
+  function confirmAndSave() {
+    onSave(
+      items
+        .filter((item) => item.name.trim())
+        .map((item) => ({ ...item, giveAway: true }))
+    )
+  }
+
   const piles = CATEGORIES.map((category) => ({
     category,
     items: items.filter((item) => item.category === category),
   })).filter((pile) => pile.items.length > 0)
 
+  const confirmedCount = items.filter((item) => confirmed.has(item.id)).length
+
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-col gap-2">
         <h1 className={TYPE.pageTitle}>{roomName}</h1>
-        <p className={TYPE.bodyRelaxed}>
-          {items.length > 0
-            ? `${plural(items.length)} found. Untick what you're keeping.`
-            : "Gemma didn't spot anything to give away. Add your items yourself."}
-        </p>
-        {items.length > 0 && (
-          <p className={TYPE.caption}>
-            Gemma can get things wrong. Fix anything that looks off, add what it
-            missed, and mark broken things as broken.
+        {items.length > 0 ? (
+          <>
+            <p className={TYPE.bodyRelaxed}>
+              We found {plural(items.length)}. Confirm each one, and remove
+              anything you're keeping.
+            </p>
+            <p className={TYPE.caption}>
+              We can get things wrong. Fix any mistakes, add anything we
+              missed, and set broken things to “Broken”.
+            </p>
+          </>
+        ) : (
+          <p className={TYPE.bodyRelaxed}>
+            Nothing to pass on yet. Add more photos of this room, or add things
+            yourself.
           </p>
         )}
       </div>
 
       {piles.length > 0 && (
-        <ul className="grid grid-cols-2 gap-3">
-          {piles.map(({ category, items: pileItems }, index) => {
+        <ul className="grid grid-cols-2 gap-3" aria-label="Piles by type">
+          {piles.map(({ category, items: pileItems }) => {
             const Icon = CATEGORY_ICONS[category]
-            const giving = pileItems.filter((item) => item.giveAway).length
             return (
               <li
                 key={category}
-                className={cn(
-                  "flex flex-col gap-3 rounded-2xl p-4",
-                  index % 4 === 1 || index % 4 === 2 ? "bg-peach" : "bg-sage"
-                )}
+                className="flex flex-col gap-3 rounded-2xl bg-sage p-4"
               >
                 <Icon size={ICON.xl} strokeWidth={1.5} aria-hidden />
                 <div className="flex flex-col">
-                  <span className="text-sm font-medium">
+                  <span className="text-base font-medium">
                     {CATEGORY_LABELS[category]}
                   </span>
-                  <span className="text-xs text-foreground/65">
-                    {plural(giving)} to give
+                  <span className="text-base text-muted-foreground">
+                    {plural(pileItems.length)} to give away
                   </span>
                 </div>
               </li>
@@ -144,9 +158,13 @@ export function ReviewStep({
           <ul className="flex flex-col gap-3">
             {pileItems.map((item) => (
               <li key={item.id}>
-                <ItemRow
+                <ReviewItemCard
                   item={item}
+                  confirmed={confirmed.has(item.id)}
                   onChange={(patch) => update(item.id, patch)}
+                  onConfirm={() => setItemConfirmed(item.id, true)}
+                  onEdit={() => setItemConfirmed(item.id, false)}
+                  onRemove={() => remove(item.id)}
                 />
               </li>
             ))}
@@ -154,155 +172,50 @@ export function ReviewStep({
         </section>
       ))}
 
-      <div className="flex flex-wrap gap-2">
-        <Button variant="outline" onClick={addItem}>
-          <Plus size={ICON.md} />
-          Add item
-        </Button>
-        <Button variant="ghost" onClick={onFilmAgain}>
-          <RotateCcw size={ICON.md} />
-          Redo this room
-        </Button>
-      </div>
+      <Button variant="outline" className="self-start" onClick={addItem}>
+        <Plus size={ICON.md} aria-hidden />
+        Add something
+      </Button>
 
       <ActionBar>
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="lg" onClick={onBack}>
-            Cancel
-          </Button>
-          <Button size="lg" className="flex-1" onClick={() => onSave(named)}>
-            <Check size={ICON.md} />
-            Save room
-          </Button>
-        </div>
+        {items.length > 0 && (
+          <p className={cn(TYPE.caption, "text-center")} aria-live="polite">
+            {confirmedCount} of {items.length} confirmed
+          </p>
+        )}
+        {items.length > 0 ? (
+          <>
+            <Button size="lg" className="w-full" onClick={confirmAndSave}>
+              <Check size={ICON.md} aria-hidden />
+              Confirm and save
+            </Button>
+            <Button
+              variant="ghost"
+              size="lg"
+              className="w-full"
+              onClick={onAddPhotos}
+            >
+              <Camera size={ICON.md} aria-hidden />
+              Add more photos
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button size="lg" className="w-full" onClick={onAddPhotos}>
+              <Camera size={ICON.md} aria-hidden />
+              Add more photos
+            </Button>
+            <Button
+              variant="ghost"
+              size="lg"
+              className="w-full"
+              onClick={() => onSave([])}
+            >
+              Save with nothing to pass on
+            </Button>
+          </>
+        )}
       </ActionBar>
-    </div>
-  )
-}
-
-function ItemRow({
-  item,
-  onChange,
-}: {
-  item: Item
-  onChange: (patch: Partial<Item>) => void
-}) {
-  const id = (field: string) => `${item.id}-${field}`
-
-  return (
-    <Card
-      size="sm"
-      className={cn("rounded-2xl", !item.giveAway && "opacity-60")}
-    >
-      <CardContent className="flex flex-col gap-3">
-        <div className="flex items-center gap-3">
-          <Checkbox
-            checked={item.giveAway}
-            onCheckedChange={(checked) => onChange({ giveAway: checked })}
-            aria-label={`Give away ${item.name || "this item"}`}
-          />
-          <Label htmlFor={id("name")} className="sr-only">
-            Item name
-          </Label>
-          <Input
-            id={id("name")}
-            value={item.name}
-            placeholder="What is it?"
-            className="h-10 rounded-full px-4"
-            onChange={(event) => onChange({ name: event.target.value })}
-          />
-        </div>
-        <div className="grid grid-cols-2 gap-2 pl-7">
-          <Field
-            label="Category"
-            htmlFor={id("category")}
-            className="col-span-2"
-          >
-            <Select
-              items={CATEGORY_LABELS}
-              value={item.category}
-              onValueChange={(category) => category && onChange({ category })}
-            >
-              <SelectTrigger
-                id={id("category")}
-                className="w-full rounded-full px-4 data-[size=default]:h-10"
-              >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {CATEGORIES.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {CATEGORY_LABELS[category]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Field>
-          <Field label="How many" htmlFor={id("quantity")}>
-            <Input
-              id={id("quantity")}
-              type="number"
-              inputMode="numeric"
-              min={1}
-              className="h-10 rounded-full px-4"
-              value={item.quantity}
-              onFocus={(event) => event.target.select()}
-              onChange={(event) =>
-                onChange({
-                  quantity: Math.max(
-                    1,
-                    Math.round(Number(event.target.value)) || 1
-                  ),
-                })
-              }
-            />
-          </Field>
-          <Field label="Condition" htmlFor={id("condition")}>
-            <Select
-              items={CONDITION_LABELS}
-              value={item.condition}
-              onValueChange={(condition) =>
-                condition && onChange({ condition })
-              }
-            >
-              <SelectTrigger
-                id={id("condition")}
-                className="w-full rounded-full px-4 data-[size=default]:h-10"
-              >
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {CONDITIONS.map((condition) => (
-                  <SelectItem key={condition} value={condition}>
-                    {CONDITION_LABELS[condition]}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </Field>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-function Field({
-  label,
-  htmlFor,
-  className,
-  children,
-}: {
-  label: string
-  htmlFor: string
-  className?: string
-  children: ReactNode
-}) {
-  return (
-    <div className={cn("flex min-w-0 flex-col gap-1", className)}>
-      <Label htmlFor={htmlFor} className={TYPE.label}>
-        {label}
-      </Label>
-      {children}
     </div>
   )
 }

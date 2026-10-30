@@ -15,24 +15,27 @@ export const DEFAULT_ROOMS: Room[] = [
   items: null,
 }))
 
-// Opening the phone camera can reload the page, so rooms are kept in the browser between visits.
-const STORAGE_KEY = "looped:rooms"
+// Opening the phone camera can reload the page, so answers and rooms are kept in the browser.
+export const ROOMS_KEY = "looped:rooms"
+export const CLEAR_OUT_KEY = "looped:clear-out"
 
-export function loadRooms(): Room[] {
+export function loadSaved<T>(key: string, fallback: T): T {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? "null")
-    if (Array.isArray(saved) && saved.length > 0) return saved as Room[]
+    const saved = JSON.parse(localStorage.getItem(key) ?? "null")
+    if (saved !== null && (!Array.isArray(saved) || saved.length > 0)) {
+      return saved as T
+    }
   } catch {
     // Unreadable or blocked storage: start fresh.
   }
-  return DEFAULT_ROOMS
+  return fallback
 }
 
-export function saveRooms(rooms: Room[]) {
+export function save(key: string, value: unknown) {
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(rooms))
+    localStorage.setItem(key, JSON.stringify(value))
   } catch {
-    // Private mode or full storage: the rooms still work for this visit.
+    // Private mode or full storage: everything still works for this visit.
   }
 }
 

@@ -2,19 +2,35 @@ import { useEffect, useMemo, useState } from "react"
 import { AppLayout } from "@/components/AppLayout"
 import { AnalysingStep } from "@/components/steps/AnalysingStep"
 import { ErrorStep } from "@/components/steps/ErrorStep"
+import { ImpactStep } from "@/components/steps/ImpactStep"
 import { PlanStep } from "@/components/steps/PlanStep"
 import { ReviewStep } from "@/components/steps/ReviewStep"
 import { RoomsStep } from "@/components/steps/RoomsStep"
+import { SituationStep } from "@/components/steps/SituationStep"
 import { UploadStep } from "@/components/steps/UploadStep"
 import { WelcomeStep } from "@/components/steps/WelcomeStep"
-import { analysePhotos, analyseVideo } from "@/lib/api"
-import { DEFAULT_ROOMS, givingItems, loadRooms, saveRooms } from "@/lib/rooms"
-import type { AppState, Item, Room } from "@/lib/types"
+import { analysePhotos } from "@/lib/api"
+import { loadDonated, saveDonated } from "@/lib/donations"
+import {
+  CLEAR_OUT_KEY,
+  DEFAULT_ROOMS,
+  ROOMS_KEY,
+  givingItems,
+  loadSaved,
+  save,
+} from "@/lib/rooms"
+import type { AppState, ClearOut, Item, Room } from "@/lib/types"
 
 export function App() {
   const [state, setState] = useState<AppState>({ step: "welcome" })
-  const [rooms, setRooms] = useState<Room[]>(loadRooms)
-  // Memoised so the plan (and its Gemma summary) only refreshes when the rooms change.
+  const [rooms, setRooms] = useState(() => loadSaved(ROOMS_KEY, DEFAULT_ROOMS))
+  const [clearOut, setClearOut] = useState(() =>
+    loadSaved<ClearOut>(CLEAR_OUT_KEY, {})
+  )
+  const [donated, setDonated] = useState(loadDonated)
+  const [situationReturn, setSituationReturn] = useState<"welcome" | "rooms">(
+    "welcome"
+  )
   const planItems = useMemo(() => givingItems(rooms), [rooms])
   const toRooms = () => setState({ step: "rooms" })
   const roomName = (roomId: string) =>
@@ -24,16 +40,15 @@ export function App() {
     window.scrollTo(0, 0)
   }, [state.step])
 
-  useEffect(() => saveRooms(rooms), [rooms])
+  useEffect(() => save(ROOMS_KEY, rooms), [rooms])
+  useEffect(() => save(CLEAR_OUT_KEY, clearOut), [clearOut])
+  useEffect(() => saveDonated(donated), [donated])
 
-  async function analyse(
-    roomId: string,
-    source: string,
-    run: () => Promise<Item[]>
-  ) {
+  async function analyse(roomId: string, photos: File[]) {
+    const source = `${photos.length} ${photos.length === 1 ? "photo" : "photos"}`
     setState({ step: "analysing", roomId, source })
     try {
-      const items = await run()
+      const items = await analysePhotos(photos)
       setState({ step: "review", roomId, items })
     } catch (error) {
       setState({ step: "error", roomId, message: (error as Error).message })
@@ -60,19 +75,55 @@ export function App() {
     setRooms((current) => [...current, { id, name, items: null }])
   }
 
+  function toggleDonated(key: string) {
+    setDonated((current) =>
+      current.includes(key)
+        ? current.filter((saved) => saved !== key)
+        : [...current, key]
+    )
+  }
+
   function clearAll() {
-    if (window.confirm("Clear every room's list and start over?")) {
+    if (window.confirm("Start over? This clears the list for every room.")) {
       setRooms(DEFAULT_ROOMS)
+      setDonated([])
       toRooms()
     }
   }
 
   return (
-    <AppLayout>
-      {state.step === "welcome" && <WelcomeStep onBegin={toRooms} />}
+    <AppLayout
+      onBack={
+        state.step === "situation"
+          ? () => setState({ step: situationReturn })
+          : backFor(state, setState)
+      }
+    >
+      {state.step === "welcome" && (
+        <WelcomeStep
+          onBegin={() => {
+            setSituationReturn("welcome")
+            setState({ step: "situation" })
+          }}
+        />
+      )}
+      {state.step === "situation" && (
+        <SituationStep
+          initial={clearOut}
+          onDone={(answers) => {
+            setClearOut(answers)
+            toRooms()
+          }}
+        />
+      )}
       {state.step === "rooms" && (
         <RoomsStep
           rooms={rooms}
+          clearOut={clearOut}
+          onChangeClearOut={() => {
+            setSituationReturn("rooms")
+            setState({ step: "situation" })
+          }}
           onOpenRoom={openRoom}
           onAddRoom={addRoom}
           onMakePlan={() => setState({ step: "plan" })}
@@ -82,17 +133,7 @@ export function App() {
       {state.step === "upload" && (
         <UploadStep
           roomName={roomName(state.roomId)}
-          onVideo={(file) =>
-            analyse(state.roomId, file.name, () => analyseVideo(file))
-          }
-          onPhotos={(files) =>
-            analyse(
-              state.roomId,
-              `${files.length} ${files.length === 1 ? "photo" : "photos"}`,
-              () => analysePhotos(files)
-            )
-          }
-          onBack={toRooms}
+          onPhotos={(photos) => analyse(state.roomId, photos)}
         />
       )}
       {state.step === "analysing" && (
@@ -107,12 +148,25 @@ export function App() {
           roomName={roomName(state.roomId)}
           initialItems={state.items}
           onSave={(items) => saveRoom(state.roomId, items)}
-          onFilmAgain={() => setState({ step: "upload", roomId: state.roomId })}
-          onBack={toRooms}
+          onAddPhotos={() => setState({ step: "upload", roomId: state.roomId })}
         />
       )}
       {state.step === "plan" && (
-        <PlanStep items={planItems} onEdit={toRooms} onStartAgain={clearAll} />
+        <PlanStep
+          items={planItems}
+          clearOut={clearOut}
+          donated={donated}
+          onToggleDonated={toggleDonated}
+          onAllDonated={() => setState({ step: "impact" })}
+          onStartAgain={clearAll}
+        />
+      )}
+      {state.step === "impact" && (
+        <ImpactStep
+          items={planItems}
+          onBackToPlan={() => setState({ step: "plan" })}
+          onStartAgain={clearAll}
+        />
       )}
       {state.step === "error" && (
         <ErrorStep
@@ -122,4 +176,27 @@ export function App() {
       )}
     </AppLayout>
   )
+}
+
+/** Where the header back arrow goes, or nothing when this step has no previous page. */
+function backFor(
+  state: AppState,
+  setState: (next: AppState) => void
+): (() => void) | undefined {
+  switch (state.step) {
+    case "welcome":
+    case "analysing":
+      return undefined
+    case "situation":
+    case "rooms":
+      return () => setState({ step: "situation" })
+    case "upload":
+    case "review":
+    case "plan":
+      return () => setState({ step: "rooms" })
+    case "impact":
+      return () => setState({ step: "plan" })
+    case "error":
+      return () => setState({ step: "upload", roomId: state.roomId })
+  }
 }

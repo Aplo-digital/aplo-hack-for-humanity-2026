@@ -41,19 +41,39 @@ export type Destination =
 
 export type PlanGroup = { destination: Destination; items: Item[] }
 
-/** A room in the home. `items` is null until it has been filmed. */
+export const SITUATIONS = [
+  "loved_one",
+  "aged_care",
+  "downsizing",
+  "moving_in",
+  "separation",
+] as const
+export type Situation = (typeof SITUATIONS)[number]
+
+export const DEADLINES = ["weekend", "two_weeks", "month", "no_rush"] as const
+export type Deadline = (typeof DEADLINES)[number]
+
+/** What the person told us on the clear-out screen. Both are optional. */
+export type ClearOut = { situation?: Situation; deadline?: Deadline }
+
+/** A room in the home. `items` is null until it has been photographed. */
 export type Room = { id: string; name: string; items: Item[] | null }
 
 export type AppState =
   | { step: "welcome" }
+  | { step: "situation" }
   | { step: "rooms" }
   | { step: "upload"; roomId: string }
   | { step: "analysing"; roomId: string; source: string }
   | { step: "review"; roomId: string; items: Item[] }
   | { step: "plan" }
+  | { step: "impact" }
   | { step: "error"; roomId: string; message: string }
 
-/** What the browser sends to /api/plan: the plan as plain facts for Gemma. */
+/** What the browser sends to /api/plan. */
+export type PlanRequest = { facts: PlanFact[] } & ClearOut
+
+/** The plan as plain facts for Gemma. */
 export type PlanFact = {
   destination: string
   notes: string

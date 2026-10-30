@@ -38,7 +38,7 @@ recolour it outside the palette.
 | Peach | `#F7DECD` | 247, 222, 205 | Warm surfaces, highlights, Gemma's summary |
 | Terracotta | `#D48865` | 212, 136, 101 | The heart and tiny accents only |
 | Taupe | `#D6CCBF` | 214, 204, 191 | Camera frame, photo placeholders |
-| Muted text | `#6B776F` | 107, 119, 111 | Captions and helper text |
+| Muted text | `#4F5C54` | 79, 92, 84 | Captions and helper text (passes WCAG AA on linen, sage and peach) |
 | Border | `#E6DFD4` | 230, 223, 212 | Soft card borders |
 
 Mostly linen and white, with sage and peach as soft blocks. Pine is for the one important action

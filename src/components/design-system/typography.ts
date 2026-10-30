@@ -8,21 +8,21 @@ export const TYPE = {
   /** Section h2, empty states */
   sectionTitle: "font-heading text-xl leading-snug font-normal",
   /** Small panel headers */
-  panelTitle: "text-sm font-semibold tracking-tight",
+  panelTitle: "text-base font-semibold tracking-tight",
   /** Card titles */
   cardTitle: "font-heading text-lg leading-snug font-normal",
   /** Uppercase section labels */
   sectionLabel:
-    "text-[11px] font-semibold tracking-widest text-muted-foreground uppercase",
+    "text-sm font-semibold tracking-wide text-muted-foreground uppercase",
   /** Body copy, descriptions */
-  body: "text-sm text-muted-foreground",
-  bodyRelaxed: "text-sm leading-relaxed text-muted-foreground",
+  body: "text-base text-muted-foreground",
+  bodyRelaxed: "text-base leading-relaxed text-muted-foreground",
   /** Form field labels */
-  label: "text-xs font-semibold text-muted-foreground",
+  label: "text-base font-semibold text-foreground",
   /** Pill badges */
-  badge: "text-[11px] font-medium tracking-wide",
+  badge: "h-7 px-2.5 text-sm font-medium tracking-wide",
   /** Meta captions: counts, helper text */
-  caption: "text-xs text-muted-foreground",
+  caption: "text-base leading-snug text-muted-foreground",
 } as const
 
 export type TypographyScale = keyof typeof TYPE

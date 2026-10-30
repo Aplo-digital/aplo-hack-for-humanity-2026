@@ -1,4 +1,4 @@
-import type { Item, PlanFact } from "./types"
+import type { Item, PlanRequest } from "./types"
 import { shrinkPhoto } from "./shrinkPhoto"
 import { shrinkVideo } from "./shrinkVideo"
 
@@ -7,13 +7,14 @@ async function postJson<T>(url: string, init: RequestInit): Promise<T> {
   try {
     response = await fetch(url, { method: "POST", ...init })
   } catch {
-    throw new Error(
-      "Couldn't reach the app's server. Check your connection and try again."
-    )
+    throw new Error("We couldn't connect. Check your internet and try again.")
   }
   const body = await response.json().catch(() => ({}))
   if (!response.ok) {
-    throw new Error(body.error ?? `The server answered ${response.status}.`)
+    throw new Error(
+      body.error ??
+        `Something went wrong (error ${response.status}). Please try again.`
+    )
   }
   return body as T
 }
@@ -37,12 +38,12 @@ export async function analysePhotos(files: File[]): Promise<Item[]> {
 }
 
 export async function writePlanSummary(
-  facts: PlanFact[],
+  request: PlanRequest,
   signal: AbortSignal
 ): Promise<string> {
   const { summary } = await postJson<{ summary: string }>("/api/plan", {
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(facts),
+    body: JSON.stringify(request),
     signal,
   })
   return summary

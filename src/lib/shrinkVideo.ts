@@ -37,7 +37,7 @@ export async function shrinkVideo(file: File): Promise<Blob> {
   if (!mimeType) {
     if (file.size <= MAX_UPLOAD_BYTES) return file
     throw new Error(
-      "This browser can't shrink videos. Try Chrome, or a clip under 4 MB."
+      "This browser can't get your video ready. Try Chrome, or take photos instead."
     )
   }
 
@@ -49,7 +49,9 @@ export async function shrinkVideo(file: File): Promise<Blob> {
     canvas.height = Math.round((video.videoHeight * scale) / 2) * 2
     const context = canvas.getContext("2d")
     if (!context)
-      throw new Error("This browser can't shrink videos. Try Chrome.")
+      throw new Error(
+        "This browser can't get your video ready. Try Chrome, or take photos instead."
+      )
 
     const recorder = new MediaRecorder(canvas.captureStream(15), {
       mimeType,
@@ -77,7 +79,9 @@ export async function shrinkVideo(file: File): Promise<Blob> {
     await new Promise<void>((resolve, reject) => {
       video.onended = () => resolve()
       video.onerror = () =>
-        reject(new Error("The video stopped playing part way through."))
+        reject(
+          new Error("We couldn't read the whole video. Try recording it again.")
+        )
     })
     drawing = false
     recorder.stop()

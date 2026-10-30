@@ -7,11 +7,11 @@ import type {
 } from "./types"
 
 const EWASTE_REASON =
-  "Broken electronics go to an e-waste drop-off. Find one at https://recyclingnearyou.com.au/"
+  "Take broken electronics to an e-waste drop-off. Find your nearest one at https://recyclingnearyou.com.au/"
 const HARD_RUBBISH_REASON =
-  "Broken items can't be donated. Book a council hard rubbish collection or take them to your local recycling centre."
+  "Charities can't take broken things. Book a council hard rubbish pickup, or take them to your local recycling centre."
 const ASK_REASON =
-  "None of the charities in our list take this yet. Your local op shop may."
+  "None of the charities on our list take these yet. Try your local op shop."
 
 function destinationFor(item: Item, rules: CharityRule[]): Destination {
   if (item.condition === "broken") {
@@ -60,7 +60,7 @@ export function destinationTitle(destination: Destination): string {
     case "charity":
       return destination.charity
     case "recycle":
-      return "Recycling or council hard rubbish"
+      return "Recycling or hard rubbish"
     case "ask":
       return "Ask your local op shop"
   }

@@ -13,13 +13,27 @@ export function WelcomeStep({ onBegin }: { onBegin: () => void }) {
           Clearing a home doesn't have to mean throwing it away.
         </h1>
         <p className={TYPE.bodyRelaxed}>
-          Film or photograph a room. We'll help you find the people who'll love
-          your things next.
+          Take photos of a room. We'll show you where each thing can go.
         </p>
+        <ol className="flex flex-col gap-2">
+          {[
+            "Choose a room.",
+            "Take photos of it.",
+            "Check the list. Remove anything you're keeping.",
+            "See where each thing can go.",
+          ].map((step, index) => (
+            <li key={step} className={`${TYPE.body} flex items-center gap-3`}>
+              <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-sage text-sm font-semibold text-foreground">
+                {index + 1}
+              </span>
+              {step}
+            </li>
+          ))}
+        </ol>
       </div>
       <ActionBar>
         <Button size="lg" className="w-full" onClick={onBegin}>
-          Let's begin
+          Get started
         </Button>
         <p className={`${TYPE.caption} text-center`}>
           No account needed. Take it one room at a time.

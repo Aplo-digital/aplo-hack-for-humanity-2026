@@ -35,8 +35,8 @@ it's an MVP that runs on one laptop.
 
 | Where | What lives there |
 | --- | --- |
-| `src/App.tsx` | The page and its steps: welcome, rooms, upload, analysing, review, plan, error (one state union). Holds the rooms list |
-| `src/lib/rooms.ts` | The default rooms, and saving them in the browser (localStorage) so a reload doesn't lose filmed rooms |
+| `src/App.tsx` | The page and its steps: welcome, situation, rooms, upload, analysing, review, plan, error (one state union). Holds the rooms list and the optional "what's happening" answers |
+| `src/lib/rooms.ts` | The default rooms, and saving rooms plus the "what's happening" answers in the browser (localStorage) so a reload doesn't lose them |
 | `src/components/steps/` | One component per step |
 | `src/components/ui/` | shadcn components. Add more with `npx shadcn@latest add <name>`, then check the `cn` import is `@/lib/utils` |
 | `src/components/design-system/` | `TYPE` text scale, `ICON` sizes, `IconBox`. Use these, not ad-hoc classes |

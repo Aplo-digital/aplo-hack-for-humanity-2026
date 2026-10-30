@@ -6,7 +6,11 @@ import {
   CONDITIONS,
   MAX_PHOTOS,
   type Item,
+  DEADLINES,
+  SITUATIONS,
+  type Deadline,
   type PlanFact,
+  type Situation,
 } from "../src/lib/types.ts"
 
 const MODEL = "gemma-4-26b-a4b-it"
@@ -73,7 +77,7 @@ export function createGemma(apiKey: string | undefined) {
       console.error("[gemma]", error)
       throw new UserError(
         502,
-        "Gemma couldn't answer right now. Please try again in a moment."
+        "Our AI couldn't answer just now. Please try again in a moment."
       )
     }
   }
@@ -85,7 +89,10 @@ export function createGemma(apiKey: string | undefined) {
         throw new UserError(415, "Please upload a video file.")
       }
       if (video.byteLength === 0)
-        throw new UserError(400, "The video was empty.")
+        throw new UserError(
+          400,
+          "That video is empty. Please choose another one."
+        )
       if (video.byteLength > MAX_UPLOAD_BYTES) {
         throw new UserError(
           413,
@@ -119,7 +126,7 @@ export function createGemma(apiKey: string | undefined) {
       if (!photos.success) {
         throw new UserError(
           400,
-          `Please add between 1 and ${MAX_PHOTOS} photos (JPEG, PNG or WebP).`
+          `Please add 1 to ${MAX_PHOTOS} photos (JPEG, PNG or WebP).`
         )
       }
       const text = await generate(
@@ -138,14 +145,14 @@ export function createGemma(apiKey: string | undefined) {
     },
 
     async writePlanSummary(body: unknown): Promise<string> {
-      const facts = PlanFacts.safeParse(body)
-      if (!facts.success || facts.data.length === 0) {
+      const plan = PlanRequest.safeParse(body)
+      if (!plan.success || plan.data.facts.length === 0) {
         throw new UserError(
           400,
           "The plan was empty or not in the expected shape."
         )
       }
-      const text = await generate(planPrompt(facts.data), false)
+      const text = await generate(planPrompt(plan.data), false)
       return text.trim()
     },
   }
@@ -170,7 +177,7 @@ export function parseItems(text: string): Item[] {
   } catch {
     throw new UserError(
       502,
-      "Gemma's answer wasn't a list we could read. Please try again."
+      "We couldn't read the list of things. Please try again."
     )
   }
   const list = Array.isArray(json)
@@ -203,15 +210,49 @@ const PlanFacts = z
   )
   .max(50) satisfies z.ZodType<PlanFact[]>
 
-function planPrompt(facts: PlanFact[]): string {
+const PlanRequest = z.object({
+  facts: PlanFacts,
+  situation: z.enum(SITUATIONS).optional().catch(undefined),
+  deadline: z.enum(DEADLINES).optional().catch(undefined),
+})
+
+// From the "What's happening?" screen. Fixed sentences, so the browser can't put words in Gemma's mouth.
+const SITUATION_TONE: Record<Situation, string> = {
+  loved_one:
+    "They are clearing a loved one's home, which can be emotional. Be warm and gentle, never cheerful about it.",
+  aged_care:
+    "Someone is moving into aged care and most things won't come with them. Be warm and practical.",
+  downsizing:
+    "They are downsizing to a smaller home. Be practical and encouraging.",
+  moving_in:
+    "They are moving in with a partner and have doubled-up things. Be light and friendly.",
+  separation:
+    "They are going through a separation. Be calm and kind, and keep it practical.",
+}
+
+const DEADLINE_HINT: Record<Deadline, string> = {
+  weekend:
+    "The house needs to be empty this weekend, so say what to drop off first.",
+  two_weeks: "The house needs to be empty in about 2 weeks.",
+  month: "The house needs to be empty in about a month.",
+  no_rush: "There's no rush.",
+}
+
+function planPrompt({
+  facts,
+  situation,
+  deadline,
+}: z.infer<typeof PlanRequest>): string {
   const lines = facts.map(
     (f) =>
       `- ${f.destination}: ${f.items.map((i) => `${i.quantity} x ${i.name}`).join(", ")}. Notes: ${f.notes}`
   )
   return [
-    "Someone is moving out and giving things away. Here is their plan:",
+    "Someone is clearing out a home and giving things away. Here is their plan:",
     ...lines,
     "",
+    ...(situation ? [SITUATION_TONE[situation]] : []),
+    ...(deadline ? [DEADLINE_HINT[deadline]] : []),
     "Write 3 to 5 short, friendly sentences for them that say what goes where, naming each charity. Use only the facts above; don't invent shops, addresses or rules. Plain text, no lists or markdown. End with a reminder to check with the store before dropping things off.",
   ].join("\n")
 }
