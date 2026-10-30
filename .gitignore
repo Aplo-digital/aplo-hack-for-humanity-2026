@@ -1,0 +1,16 @@
+# secrets
+.env
+*.env
+!sample.env
+.streamlit/secrets.toml
+
+# data you may not publish: add each "own use" or Snowflake Marketplace file by name
+# data/my_marketplace_export.csv
+
+# Python and tools
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store
