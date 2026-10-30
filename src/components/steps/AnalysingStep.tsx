@@ -1,4 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/Skeleton"
 import { TYPE } from "@/components/design-system"
 
@@ -12,15 +11,16 @@ export function AnalysingStep({ fileName }: { fileName: string }) {
         </p>
         <p className={`${TYPE.caption} truncate`}>{fileName}</p>
       </div>
-      <div className="flex flex-col gap-3">
-        {[0, 1, 2, 3].map((row) => (
-          <Card key={row} size="sm">
-            <CardContent className="flex items-center gap-3">
-              <Skeleton className="size-4 rounded" />
-              <Skeleton className="h-4 flex-1" />
-              <Skeleton className="h-4 w-20" />
-            </CardContent>
-          </Card>
+      <div className="grid grid-cols-2 gap-3">
+        {["bg-sage", "bg-peach", "bg-peach", "bg-sage"].map((tone, index) => (
+          <div
+            key={index}
+            className={`flex h-28 flex-col justify-end gap-2 rounded-2xl p-4 ${tone}`}
+          >
+            <Skeleton className="size-6 rounded-full" />
+            <Skeleton className="h-3.5 w-3/4 rounded-full" />
+            <Skeleton className="h-3 w-1/2 rounded-full" />
+          </div>
         ))}
       </div>
     </div>

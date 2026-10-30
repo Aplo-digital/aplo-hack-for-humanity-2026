@@ -1,4 +1,5 @@
 import type { HTMLAttributes } from "react"
+import { cn } from "@/lib/utils"
 
 /**
  * Loading placeholder with a shimmer sweep. Drop it where content will land —
@@ -12,7 +13,7 @@ export function Skeleton({
   return (
     <div
       aria-hidden
-      className={`skeleton-shimmer rounded-md ${className}`}
+      className={cn("skeleton-shimmer rounded-md", className)}
       {...props}
     />
   )

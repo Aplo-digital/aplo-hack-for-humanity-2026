@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/dm-sans";
+@import "@fontsource-variable/fraunces";
 
 /* Arial scaled to DM Sans's metrics (@capsizecss/metrics), so text doesn't
    reflow when the web font swaps in. */
@@ -18,7 +19,12 @@
 @source "../**/*.{ts,tsx}";
 
 @theme inline {
-  --font-heading: var(--font-sans);
+  --font-heading: "Fraunces Variable", Georgia, serif;
+  --color-sage: var(--sage);
+  --color-peach: var(--peach);
+  --color-pine: var(--pine);
+  --color-terracotta: var(--terracotta);
+  --color-taupe: var(--taupe);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -61,30 +67,35 @@
 }
 
 :root {
-  --background: oklch(0.967 0.001 286.375);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.92 0.002 286.375);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.94 0.002 286.375);
-  --muted-foreground: oklch(0.45 0 0);
-  --accent: oklch(0.93 0.002 286.375);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.005 286.375);
-  --input: oklch(0.88 0.005 286.375);
-  --ring: oklch(0.5 0 0);
+  --background: #f6f1e9;
+  --foreground: #1f3b31;
+  --card: #ffffff;
+  --card-foreground: #1f3b31;
+  --popover: #ffffff;
+  --popover-foreground: #1f3b31;
+  --primary: #336652;
+  --primary-foreground: #ffffff;
+  --secondary: #dbe7db;
+  --secondary-foreground: #1f3b31;
+  --muted: #eee8de;
+  --muted-foreground: #6b776f;
+  --accent: #dbe7db;
+  --accent-foreground: #1f3b31;
+  --destructive: #b5482f;
+  --border: #e6dfd4;
+  --input: #d0dcd0;
+  --ring: #336652;
+  --sage: #dbe7db;
+  --peach: #f7decd;
+  --pine: #336652;
+  --terracotta: #d48865;
+  --taupe: #d6ccbf;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
   --chart-4: oklch(0.371 0 0);
   --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
+  --radius: 0.875rem;
   --sidebar: oklch(0.985 0.001 286.375);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -96,24 +107,29 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
+  --background: #15201b;
+  --foreground: #ebe6dc;
+  --card: #1e2b25;
+  --card-foreground: #ebe6dc;
+  --popover: #1e2b25;
+  --popover-foreground: #ebe6dc;
+  --primary: #8fc2a8;
+  --primary-foreground: #10201a;
+  --secondary: #2a3b33;
+  --secondary-foreground: #ebe6dc;
+  --muted: #24322b;
+  --muted-foreground: #a3afa7;
+  --accent: #2a3b33;
+  --accent-foreground: #ebe6dc;
+  --destructive: #e58a72;
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --ring: #8fc2a8;
+  --sage: #2a3b33;
+  --peach: #3d2d24;
+  --pine: #8fc2a8;
+  --terracotta: #e09b7a;
+  --taupe: #2e3631;
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);

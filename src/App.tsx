@@ -5,11 +5,14 @@ import { ErrorStep } from "@/components/steps/ErrorStep"
 import { PlanStep } from "@/components/steps/PlanStep"
 import { ReviewStep } from "@/components/steps/ReviewStep"
 import { UploadStep } from "@/components/steps/UploadStep"
+import { WelcomeStep } from "@/components/steps/WelcomeStep"
 import { analyseVideo } from "@/lib/api"
 import type { AppState } from "@/lib/types"
 
+type Screen = { step: "welcome" } | AppState
+
 export function App() {
-  const [state, setState] = useState<AppState>({ step: "upload" })
+  const [state, setState] = useState<Screen>({ step: "welcome" })
   const startAgain = () => setState({ step: "upload" })
 
   useEffect(() => {
@@ -28,6 +31,9 @@ export function App() {
 
   return (
     <AppLayout>
+      {state.step === "welcome" && (
+        <WelcomeStep onBegin={() => setState({ step: "upload" })} />
+      )}
       {state.step === "upload" && <UploadStep onVideo={handleVideo} />}
       {state.step === "analysing" && (
         <AnalysingStep fileName={state.fileName} />

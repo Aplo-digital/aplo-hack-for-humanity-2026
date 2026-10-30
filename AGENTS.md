@@ -35,11 +35,11 @@ it's an MVP that runs on one laptop.
 
 | Where | What lives there |
 | --- | --- |
-| `src/App.tsx` | The page and its steps: upload, analysing, review, plan, error (one state union) |
+| `src/App.tsx` | The page and its steps: welcome, upload, analysing, review, plan, error (one state union) |
 | `src/components/steps/` | One component per step |
 | `src/components/ui/` | shadcn components. Add more with `npx shadcn@latest add <name>`, then check the `cn` import is `@/lib/utils` |
 | `src/components/design-system/` | `TYPE` text scale, `ICON` sizes, `IconBox`. Use these, not ad-hoc classes |
-| `src/styles/globals.css` | Colour tokens, radius, DM Sans. Change colours here, not per component |
+| `src/styles/globals.css` | Colour tokens (incl. sage, peach, pine, terracotta, taupe), radius, DM Sans and Fraunces. Change colours here, not per component |
 | `src/lib/types.ts` | `Item`, `Category`, `Condition`, `CharityRule`, `Destination` |
 | `src/lib/route.ts` | `routeItems`: where each item goes. Keep it pure and keep `route.test.ts` passing |
 | `data/charities.csv` | Charity rules the team edits in Excel: charity, category, accepted (yes/some), notes, source link |

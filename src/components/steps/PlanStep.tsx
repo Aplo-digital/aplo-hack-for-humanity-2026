@@ -2,18 +2,19 @@ import { useEffect, useMemo, useState, type ReactNode } from "react"
 import {
   ArrowLeft,
   ExternalLink,
-  HandHeart,
+  Heart,
   Info,
   Recycle,
   RotateCcw,
   Sparkles,
   Store,
 } from "lucide-react"
+import { ActionBar } from "@/components/AppLayout"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/Skeleton"
-import { ICON, IconBox, TYPE } from "@/components/design-system"
+import { ICON, TYPE } from "@/components/design-system"
+import { cn } from "@/lib/utils"
 import { writePlanSummary } from "@/lib/api"
 import { CHARITY_RULES } from "@/lib/charities"
 import { CATEGORY_LABELS } from "@/lib/labels"
@@ -54,22 +55,18 @@ export function PlanStep({
   }
 
   return (
-    <div className="flex flex-col gap-6">
-      <h1 className={TYPE.pageTitle}>Your plan</h1>
+    <div className="flex flex-1 flex-col gap-6">
+      <h1 className={TYPE.pageTitle}>Find a home</h1>
 
-      <Card>
-        <CardContent className="flex flex-col gap-3">
-          <div className="flex items-center gap-2">
-            <IconBox variant="badge" accent="violet">
-              <Sparkles />
-            </IconBox>
-            <h2 className={TYPE.panelTitle}>Gemma's summary</h2>
-          </div>
-          <SummaryBody summary={summary} onRetry={retrySummary} />
-        </CardContent>
-      </Card>
+      <section className="flex flex-col gap-3 rounded-2xl bg-peach p-5">
+        <div className="flex items-center gap-2">
+          <Sparkles size={ICON.sm} className="text-terracotta" />
+          <h2 className={TYPE.panelTitle}>Gemma's summary</h2>
+        </div>
+        <SummaryBody summary={summary} onRetry={retrySummary} />
+      </section>
 
-      <div className="flex items-start gap-2.5 rounded-lg border border-dashed px-3 py-2.5">
+      <div className="flex items-start gap-2.5 px-1">
         <Info
           size={ICON.md}
           className="mt-0.5 shrink-0 text-muted-foreground"
@@ -88,16 +85,28 @@ export function PlanStep({
         ))}
       </ul>
 
-      <div className="flex flex-wrap justify-between gap-2">
-        <Button variant="outline" onClick={onEdit}>
-          <ArrowLeft size={ICON.md} />
-          Edit my list
-        </Button>
-        <Button variant="ghost" onClick={onStartAgain}>
-          <RotateCcw size={ICON.md} />
-          Start again
-        </Button>
-      </div>
+      <ActionBar>
+        <div className="flex gap-2">
+          <Button
+            size="lg"
+            variant="outline"
+            className="flex-1"
+            onClick={onEdit}
+          >
+            <ArrowLeft size={ICON.md} />
+            Edit my list
+          </Button>
+          <Button
+            size="lg"
+            variant="ghost"
+            className="flex-1"
+            onClick={onStartAgain}
+          >
+            <RotateCcw size={ICON.md} />
+            Start again
+          </Button>
+        </div>
+      </ActionBar>
     </div>
   )
 }
@@ -137,9 +146,21 @@ function SummaryBody({
 }
 
 const DESTINATION_STYLE = {
-  charity: { accent: "emerald", icon: <HandHeart /> },
-  recycle: { accent: "orange", icon: <Recycle /> },
-  ask: { accent: "sky", icon: <Store /> },
+  charity: {
+    card: "bg-card ring-1 ring-border",
+    badge: "bg-sage",
+    icon: <Heart size={ICON.md} className="fill-terracotta text-terracotta" />,
+  },
+  recycle: {
+    card: "bg-peach",
+    badge: "bg-card",
+    icon: <Recycle size={ICON.md} className="text-pine" />,
+  },
+  ask: {
+    card: "border-2 border-dashed border-input",
+    badge: "bg-sage",
+    icon: <Store size={ICON.md} className="text-pine" />,
+  },
 } as const
 
 function DestinationCard({ group }: { group: PlanGroup }) {
@@ -147,57 +168,63 @@ function DestinationCard({ group }: { group: PlanGroup }) {
   const style = DESTINATION_STYLE[destination.kind]
 
   return (
-    <Card>
-      <CardContent className="flex flex-col gap-3">
-        <div className="flex items-start gap-3">
-          <IconBox variant="legend" accent={style.accent}>
-            {style.icon}
-          </IconBox>
-          <div className="flex min-w-0 flex-1 flex-col gap-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <h2 className={TYPE.cardTitle}>
-                {destinationTitle(destination)}
-              </h2>
-              {destination.kind === "charity" && (
-                <Badge variant="secondary" className={TYPE.badge}>
-                  {CATEGORY_LABELS[destination.rule.category]}
-                </Badge>
-              )}
-            </div>
-            <p className={TYPE.body}>
-              <WithLinks
-                text={
-                  destination.kind === "charity"
-                    ? destination.rule.notes
-                    : destination.reason
-                }
-              />
-            </p>
+    <article className={cn("flex flex-col gap-4 rounded-2xl p-4", style.card)}>
+      <div className="flex items-start gap-3">
+        <span
+          className={cn(
+            "flex size-10 shrink-0 items-center justify-center rounded-full",
+            style.badge
+          )}
+        >
+          {style.icon}
+        </span>
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className={TYPE.cardTitle}>{destinationTitle(destination)}</h2>
+            {destination.kind === "charity" && (
+              <Badge variant="secondary" className={TYPE.badge}>
+                {CATEGORY_LABELS[destination.rule.category]}
+              </Badge>
+            )}
           </div>
+          <p className={TYPE.caption}>
+            <WithLinks
+              text={
+                destination.kind === "charity"
+                  ? destination.rule.notes
+                  : destination.reason
+              }
+            />
+          </p>
         </div>
+      </div>
 
-        <ul className="flex flex-col gap-1 pl-13">
-          {items.map((item) => (
-            <li key={item.id} className="text-sm">
-              <span className="tabular-nums">{item.quantity} ×</span>{" "}
-              {item.name}
-            </li>
-          ))}
-        </ul>
-
-        {destination.kind === "charity" && destination.rule.source && (
-          <a
-            href={destination.rule.source}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center gap-1 pl-13 text-sm font-medium underline-offset-4 hover:underline"
+      <ul className="flex flex-wrap gap-2">
+        {items.map((item) => (
+          <li
+            key={item.id}
+            className={cn(
+              "rounded-full px-3 py-1 text-xs",
+              destination.kind === "recycle" ? "bg-card" : "bg-sage"
+            )}
           >
-            Their donation guide
-            <ExternalLink size={ICON.xs} />
-          </a>
-        )}
-      </CardContent>
-    </Card>
+            <span className="tabular-nums">{item.quantity} ×</span> {item.name}
+          </li>
+        ))}
+      </ul>
+
+      {destination.kind === "charity" && destination.rule.source && (
+        <a
+          href={destination.rule.source}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1 self-start text-sm font-medium text-pine underline-offset-4 hover:underline"
+        >
+          Their donation guide
+          <ExternalLink size={ICON.xs} />
+        </a>
+      )}
+    </article>
   )
 }
 

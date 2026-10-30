@@ -1,7 +1,7 @@
 import { CircleAlert, RotateCcw } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { ActionBar } from "@/components/AppLayout"
 import { Button } from "@/components/ui/button"
-import { ICON, IconBox, TYPE } from "@/components/design-system"
+import { ICON, TYPE } from "@/components/design-system"
 
 export function ErrorStep({
   message,
@@ -11,20 +11,25 @@ export function ErrorStep({
   onTryAgain: () => void
 }) {
   return (
-    <Card>
-      <CardContent className="flex flex-col items-start gap-4" role="alert">
-        <IconBox variant="legend" accent="orange">
-          <CircleAlert />
-        </IconBox>
+    <div className="flex flex-1 flex-col gap-6">
+      <div
+        className="flex flex-col items-start gap-4 rounded-2xl bg-peach p-5"
+        role="alert"
+      >
+        <span className="flex size-10 items-center justify-center rounded-full bg-card text-terracotta">
+          <CircleAlert size={ICON.xl} />
+        </span>
         <div className="flex flex-col gap-1">
           <h1 className={TYPE.sectionTitle}>Something went wrong</h1>
           <p className={TYPE.bodyRelaxed}>{message}</p>
         </div>
-        <Button onClick={onTryAgain}>
+      </div>
+      <ActionBar>
+        <Button size="lg" className="w-full" onClick={onTryAgain}>
           <RotateCcw size={ICON.md} />
           Try again
         </Button>
-      </CardContent>
-    </Card>
+      </ActionBar>
+    </div>
   )
 }

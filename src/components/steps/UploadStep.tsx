@@ -1,9 +1,16 @@
 import { useRef, useState, type DragEvent } from "react"
-import { Camera, Lock, Upload, Video } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Camera, Lock, Upload } from "lucide-react"
+import { ActionBar } from "@/components/AppLayout"
 import { Button } from "@/components/ui/button"
-import { ICON, IconBox, TYPE } from "@/components/design-system"
+import { ICON, TYPE } from "@/components/design-system"
 import { cn } from "@/lib/utils"
+
+const CORNERS = [
+  "top-6 left-6 border-t-2 border-l-2",
+  "top-6 right-6 border-t-2 border-r-2",
+  "bottom-6 left-6 border-b-2 border-l-2",
+  "right-6 bottom-6 border-r-2 border-b-2",
+]
 
 export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
   const chooseInput = useRef<HTMLInputElement>(null)
@@ -27,7 +34,7 @@ export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-1 flex-col gap-5">
       <div className="flex flex-col gap-2">
         <h1 className={TYPE.pageTitle}>Moving out? Pass it on.</h1>
         <p className={TYPE.bodyRelaxed}>
@@ -37,81 +44,85 @@ export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
         </p>
       </div>
 
-      <Card>
-        <CardContent>
-          <div
-            onDragOver={(event) => {
-              event.preventDefault()
-              setDragging(true)
-            }}
-            onDragLeave={() => setDragging(false)}
-            onDrop={handleDrop}
-            className={cn(
-              "flex flex-col items-center gap-4 rounded-lg border border-dashed px-4 py-10 text-center transition-colors",
-              dragging && "border-ring bg-muted"
-            )}
-          >
-            <IconBox variant="hero" accent="emerald">
-              <Video />
-            </IconBox>
-            <div className="flex flex-col gap-1">
-              <p className={TYPE.cardTitle}>Add a video of your room</p>
-              <p className={TYPE.caption}>
-                Drop it here, or use a button below. Up to 200 MB.
-              </p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-2">
-              <Button size="lg" onClick={() => chooseInput.current?.click()}>
-                <Upload size={ICON.md} />
-                Choose a video
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => recordInput.current?.click()}
-              >
-                <Camera size={ICON.md} />
-                Record one now
-              </Button>
-            </div>
-            {hint && (
-              <p role="alert" className="text-sm text-destructive">
-                {hint}
-              </p>
-            )}
-          </div>
-          <input
-            ref={chooseInput}
-            type="file"
-            accept="video/*"
-            className="sr-only"
-            tabIndex={-1}
-            aria-label="Choose a video"
-            onChange={(event) => pick(event.target.files?.[0])}
+      <div
+        onDragOver={(event) => {
+          event.preventDefault()
+          setDragging(true)
+        }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={handleDrop}
+        className={cn(
+          "relative flex h-[min(36dvh,340px)] min-h-52 flex-col items-center justify-center gap-2 rounded-2xl bg-taupe px-6 text-center transition-colors",
+          dragging && "bg-sage ring-2 ring-primary"
+        )}
+      >
+        {CORNERS.map((corner) => (
+          <span
+            key={corner}
+            aria-hidden
+            className={`absolute size-6 border-card/90 ${corner}`}
           />
-          <input
-            ref={recordInput}
-            type="file"
-            accept="video/*"
-            capture="environment"
-            className="sr-only"
-            tabIndex={-1}
-            aria-label="Record a video"
-            onChange={(event) => pick(event.target.files?.[0])}
-          />
-        </CardContent>
-      </Card>
+        ))}
+        <span className="rounded-full bg-card/85 px-4 py-1.5 text-sm text-foreground">
+          Add a video of your room
+        </span>
+        <span className="text-xs text-foreground/70">
+          Drop it here, or use a button below. Up to 200 MB.
+        </span>
+      </div>
 
-      <div className="flex items-start gap-2.5">
-        <Lock
-          size={ICON.sm}
-          className="mt-0.5 shrink-0 text-muted-foreground"
-        />
-        <p className={TYPE.body}>
+      {hint && (
+        <p role="alert" className="text-sm text-destructive">
+          {hint}
+        </p>
+      )}
+
+      <input
+        ref={chooseInput}
+        type="file"
+        accept="video/*"
+        className="sr-only"
+        tabIndex={-1}
+        aria-label="Choose a video"
+        onChange={(event) => pick(event.target.files?.[0])}
+      />
+      <input
+        ref={recordInput}
+        type="file"
+        accept="video/*"
+        capture="environment"
+        className="sr-only"
+        tabIndex={-1}
+        aria-label="Record a video"
+        onChange={(event) => pick(event.target.files?.[0])}
+      />
+
+      <ActionBar>
+        <Button
+          size="lg"
+          className="w-full"
+          onClick={() => chooseInput.current?.click()}
+        >
+          <Upload size={ICON.md} />
+          Choose a video
+        </Button>
+        <Button
+          size="lg"
+          variant="outline"
+          className="w-full"
+          onClick={() => recordInput.current?.click()}
+        >
+          <Camera size={ICON.md} />
+          Record one now
+        </Button>
+        <p
+          className={`${TYPE.caption} flex items-start justify-center gap-1.5 text-center`}
+        >
+          <Lock size={ICON.xs} className="mt-0.5 shrink-0" />
           Your video is sent to Google's Gemini API to find the items. We don't
           save it.
         </p>
-      </div>
+      </ActionBar>
     </div>
   )
 }

@@ -1,5 +1,19 @@
 import { useState, type ReactNode } from "react"
-import { ArrowRight, Plus } from "lucide-react"
+import {
+  Armchair,
+  ArrowRight,
+  BedDouble,
+  BookOpen,
+  CircleHelp,
+  CookingPot,
+  Lamp,
+  Monitor,
+  Plus,
+  Puzzle,
+  Shirt,
+  type LucideIcon,
+} from "lucide-react"
+import { ActionBar } from "@/components/AppLayout"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -15,7 +29,21 @@ import {
 import { ICON, TYPE } from "@/components/design-system"
 import { cn } from "@/lib/utils"
 import { CATEGORY_LABELS, CONDITION_LABELS } from "@/lib/labels"
-import { CATEGORIES, CONDITIONS, type Item } from "@/lib/types"
+import { CATEGORIES, CONDITIONS, type Category, type Item } from "@/lib/types"
+
+const CATEGORY_ICONS: Record<Category, LucideIcon> = {
+  furniture: Armchair,
+  clothing: Shirt,
+  electronics: Monitor,
+  kitchenware: CookingPot,
+  books_media: BookOpen,
+  decor: Lamp,
+  linen: BedDouble,
+  toys: Puzzle,
+  other: CircleHelp,
+}
+
+const plural = (count: number) => `${count} ${count === 1 ? "thing" : "things"}`
 
 export function ReviewStep({
   initialItems,
@@ -50,44 +78,99 @@ export function ReviewStep({
     ])
   }
 
+  const piles = CATEGORIES.map((category) => ({
+    category,
+    items: items.filter((item) => item.category === category),
+  })).filter((pile) => pile.items.length > 0)
+
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h1 className={TYPE.pageTitle}>Check your list</h1>
+        <h1 className={TYPE.pageTitle}>Your piles</h1>
         <p className={TYPE.bodyRelaxed}>
           {items.length > 0
-            ? "Gemma can get things wrong. Untick what you're keeping, fix anything that looks off, and add what it missed. Mark broken things as broken."
+            ? `${plural(items.length)} found. Untick what you're keeping.`
             : "Gemma didn't spot anything to give away. Add your items yourself."}
         </p>
+        {items.length > 0 && (
+          <p className={TYPE.caption}>
+            Gemma can get things wrong. Fix anything that looks off, add what it
+            missed, and mark broken things as broken.
+          </p>
+        )}
       </div>
 
-      <ul className="flex flex-col gap-3">
-        {items.map((item) => (
-          <li key={item.id}>
-            <ItemRow item={item} onChange={(patch) => update(item.id, patch)} />
-          </li>
-        ))}
-      </ul>
+      {piles.length > 0 && (
+        <ul className="grid grid-cols-2 gap-3">
+          {piles.map(({ category, items: pileItems }, index) => {
+            const Icon = CATEGORY_ICONS[category]
+            const giving = pileItems.filter((item) => item.giveAway).length
+            return (
+              <li
+                key={category}
+                className={cn(
+                  "flex flex-col gap-3 rounded-2xl p-4",
+                  index % 4 === 1 || index % 4 === 2 ? "bg-peach" : "bg-sage"
+                )}
+              >
+                <Icon size={ICON.xl} strokeWidth={1.5} aria-hidden />
+                <div className="flex flex-col">
+                  <span className="text-sm font-medium">
+                    {CATEGORY_LABELS[category]}
+                  </span>
+                  <span className="text-xs text-foreground/65">
+                    {plural(giving)} to give
+                  </span>
+                </div>
+              </li>
+            )
+          })}
+        </ul>
+      )}
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <Button variant="outline" onClick={addItem}>
-          <Plus size={ICON.md} />
-          Add item
-        </Button>
+      {piles.map(({ category, items: pileItems }) => (
+        <section
+          key={category}
+          aria-labelledby={`pile-${category}`}
+          className="flex flex-col gap-3"
+        >
+          <h2 id={`pile-${category}`} className={TYPE.sectionTitle}>
+            {CATEGORY_LABELS[category]}
+          </h2>
+          <ul className="flex flex-col gap-3">
+            {pileItems.map((item) => (
+              <li key={item.id}>
+                <ItemRow
+                  item={item}
+                  onChange={(patch) => update(item.id, patch)}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+
+      <Button variant="outline" className="self-start" onClick={addItem}>
+        <Plus size={ICON.md} />
+        Add item
+      </Button>
+
+      <ActionBar>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" onClick={onStartAgain}>
+          <Button variant="ghost" size="lg" onClick={onStartAgain}>
             Start again
           </Button>
           <Button
             size="lg"
+            className="flex-1"
             disabled={givingCount === 0}
             onClick={() => onMakePlan(named)}
           >
-            Make my plan
+            Find homes for these
             <ArrowRight size={ICON.md} />
           </Button>
         </div>
-      </div>
+      </ActionBar>
     </div>
   )
 }
@@ -102,7 +185,10 @@ function ItemRow({
   const id = (field: string) => `${item.id}-${field}`
 
   return (
-    <Card size="sm" className={item.giveAway ? "" : "opacity-60"}>
+    <Card
+      size="sm"
+      className={cn("rounded-2xl", !item.giveAway && "opacity-60")}
+    >
       <CardContent className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <Checkbox
@@ -117,21 +203,25 @@ function ItemRow({
             id={id("name")}
             value={item.name}
             placeholder="What is it?"
+            className="h-10 rounded-full px-4"
             onChange={(event) => onChange({ name: event.target.value })}
           />
         </div>
-        <div className="grid grid-cols-2 gap-2 pl-7 sm:grid-cols-[1fr_5rem_1fr]">
+        <div className="grid grid-cols-2 gap-2 pl-7">
           <Field
             label="Category"
             htmlFor={id("category")}
-            className="col-span-2 sm:col-span-1"
+            className="col-span-2"
           >
             <Select
               items={CATEGORY_LABELS}
               value={item.category}
               onValueChange={(category) => category && onChange({ category })}
             >
-              <SelectTrigger id={id("category")} className="w-full">
+              <SelectTrigger
+                id={id("category")}
+                className="w-full rounded-full px-4 data-[size=default]:h-10"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -149,6 +239,7 @@ function ItemRow({
               type="number"
               inputMode="numeric"
               min={1}
+              className="h-10 rounded-full px-4"
               value={item.quantity}
               onFocus={(event) => event.target.select()}
               onChange={(event) =>
@@ -169,7 +260,10 @@ function ItemRow({
                 condition && onChange({ condition })
               }
             >
-              <SelectTrigger id={id("condition")} className="w-full">
+              <SelectTrigger
+                id={id("condition")}
+                className="w-full rounded-full px-4 data-[size=default]:h-10"
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>

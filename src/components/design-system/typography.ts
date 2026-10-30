@@ -3,13 +3,14 @@
  */
 export const TYPE = {
   /** Page h1 */
-  pageTitle: "text-xl font-semibold tracking-tight sm:text-2xl md:text-3xl",
+  pageTitle:
+    "font-heading text-[1.75rem] leading-[1.15] font-[350] tracking-tight",
   /** Section h2, empty states */
-  sectionTitle: "text-base font-semibold tracking-tight sm:text-lg",
+  sectionTitle: "font-heading text-xl leading-snug font-normal",
   /** Small panel headers */
   panelTitle: "text-sm font-semibold tracking-tight",
   /** Card titles */
-  cardTitle: "text-base font-semibold tracking-tight",
+  cardTitle: "font-heading text-lg leading-snug font-normal",
   /** Uppercase section labels */
   sectionLabel:
     "text-[11px] font-semibold tracking-widest text-muted-foreground uppercase",
