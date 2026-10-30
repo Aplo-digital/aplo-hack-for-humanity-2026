@@ -12,6 +12,15 @@ result before the next. Change the words in [square brackets].
 
 ## 2. Pick an idea
 
+No idea yet? Start here:
+
+> Read docs/HACKATHON.md and data/README.md. We have no idea yet. Ask us a few questions about
+> what we care about, then suggest five app ideas across Health, Education and Sustainability.
+> Use any dataset in data/ or in "Get it yourself". For each idea, say who it helps, which
+> data it uses, what Gemma would do and whether we can build it in one afternoon.
+
+Know your theme already?
+
 > Read docs/HACKATHON.md and data/README.md. We are interested in [Health / Education /
 > Sustainability]. Suggest three app ideas that would help a real person in South Australia,
 > using the ★ datasets. For each, say who it helps, which data it uses and what Gemma would do.
