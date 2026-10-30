@@ -149,7 +149,7 @@ Population, money, work and maps. Pair any theme dataset with these.
 | Money | ● | F6 ATO taxation statistics | Median and average taxable income | postcode | 2023-24 | [folder](4_foundation/F6_ato-taxation-stats-2023-24/) |
 | Money | ● | F8 DSS payment recipients | People on Age Pension, JobSeeker and other payments | SA2, LGA | to Jun 2026 | [folder](4_foundation/F8_dss-payment-demographics/) |
 | Work | ● | F7 Small Area Labour Markets | Unemployment rate estimates | SA2, LGA | Mar quarter 2026 | [folder](4_foundation/F7_salm-mar-2026/) |
-| Maps | ● | F12 Boundaries | Shapes to map any SA2 dataset (LGA and postcode shapes too) | SA2, LGA, postcode | 2021 edition | [folder](4_foundation/F12_asgs-edition3-boundaries/) |
+| Maps | ↗ | F12 Boundaries | Shapes to map any SA2 dataset (LGA and postcode shapes too) | SA2, LGA, postcode | 2021 edition | [download steps](4_foundation/F12_asgs-edition3-boundaries/) |
 | Maps | ● | F13 Geography correspondences | Converts postcode or LGA data to SA2 and back | all | 2021 edition | [folder](4_foundation/F13_asgs-edition3-correspondences/) |
 | Getting around | ● | F14 Adelaide Metro timetable (GTFS) | Every stop, route and timetable | stop | Oct 2026 | [folder](extras/4_foundation/F14_adelaide-metro-gtfs/) |
 | Cost of living | ● | F10 Monthly household spending (SA) | Spending trend by category | state | Aug 2026 | [folder](extras/4_foundation/F10_abs-household-spending-indicator-aug-2026/) |

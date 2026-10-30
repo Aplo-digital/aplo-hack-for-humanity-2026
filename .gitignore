@@ -14,3 +14,6 @@ __pycache__/
 *.pyc
 .ipynb_checkpoints/
 .DS_Store
+
+# full-Australia map zips: download them, keep only the SA GeoJSON (see data/4_foundation/F12_asgs-edition3-boundaries/README.md)
+data/4_foundation/F12_asgs-edition3-boundaries/*.zip

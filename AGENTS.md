@@ -53,8 +53,10 @@ is mostly non-technical and builds by talking to you. Read this whole file befor
 - Many government XLSX files have title rows above the real header. Open the file, list its
   sheet names and print the first 15 rows before choosing `sheet_name` and `skiprows`.
   `openpyxl` is installed for reading XLSX.
-- Zip files (boundaries, correspondences) are large. Read them only if the app needs a map or
-  needs to convert between areas.
+- Map shapes (F12) are not in this repo. If the app needs a map, follow the steps in
+  `data/4_foundation/F12_asgs-edition3-boundaries/README.md`: download one zip, keep only SA,
+  and commit a small GeoJSON. The F13 correspondences zip is only for converting between
+  areas, such as postcode to SA2.
 - Datasets marked ↗ in the data guide are not in this repo. If the team needs one, follow the
   "Get it yourself" steps. Where the terms say "own use", keep the file out of Git: add its
   name to `.gitignore`.
