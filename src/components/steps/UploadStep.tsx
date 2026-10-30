@@ -67,7 +67,7 @@ export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
           Add a video of your room
         </span>
         <span className="text-xs text-foreground/70">
-          Drop it here, or use a button below. Up to 200 MB.
+          Drop it here, or use a button below. Up to about 2 minutes.
         </span>
       </div>
 
