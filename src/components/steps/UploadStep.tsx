@@ -1,5 +1,5 @@
 import { useRef, useState, type DragEvent } from "react"
-import { Camera, Lock, Upload } from "lucide-react"
+import { ArrowLeft, Camera, Lock, Upload } from "lucide-react"
 import { ActionBar } from "@/components/AppLayout"
 import { Button } from "@/components/ui/button"
 import { ICON, TYPE } from "@/components/design-system"
@@ -12,7 +12,15 @@ const CORNERS = [
   "right-6 bottom-6 border-r-2 border-b-2",
 ]
 
-export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
+export function UploadStep({
+  roomName,
+  onVideo,
+  onBack,
+}: {
+  roomName: string
+  onVideo: (file: File) => void
+  onBack: () => void
+}) {
   const chooseInput = useRef<HTMLInputElement>(null)
   const recordInput = useRef<HTMLInputElement>(null)
   const [dragging, setDragging] = useState(false)
@@ -36,11 +44,10 @@ export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
   return (
     <div className="flex flex-1 flex-col gap-5">
       <div className="flex flex-col gap-2">
-        <h1 className={TYPE.pageTitle}>Moving out? Keep it in the loop.</h1>
+        <h1 className={TYPE.pageTitle}>Film the {roomName.toLowerCase()}</h1>
         <p className={TYPE.bodyRelaxed}>
-          Film a slow walk around a room. Gemma lists what it sees, you tick
-          what you're giving away, and we tell you which charity takes each
-          thing.
+          Walk slowly around the room and open cupboards as you go. Gemma lists
+          what it sees, and you tick what you're giving away.
         </p>
       </div>
 
@@ -64,7 +71,7 @@ export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
           />
         ))}
         <span className="rounded-full bg-card/85 px-4 py-1.5 text-sm text-foreground">
-          Add a video of your room
+          Add a video of the {roomName.toLowerCase()}
         </span>
         <span className="text-xs text-foreground/70">
           Drop it here, or use a button below. Up to about 2 minutes.
@@ -114,6 +121,10 @@ export function UploadStep({ onVideo }: { onVideo: (file: File) => void }) {
         >
           <Camera size={ICON.md} />
           Record one now
+        </Button>
+        <Button variant="ghost" className="w-full" onClick={onBack}>
+          <ArrowLeft size={ICON.md} />
+          Back to rooms
         </Button>
         <p
           className={`${TYPE.caption} flex items-start justify-center gap-1.5 text-center`}

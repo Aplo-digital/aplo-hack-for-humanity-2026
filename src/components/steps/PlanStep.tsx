@@ -94,7 +94,7 @@ export function PlanStep({
             onClick={onEdit}
           >
             <ArrowLeft size={ICON.md} />
-            Edit my list
+            Back to rooms
           </Button>
           <Button
             size="lg"

@@ -6,9 +6,11 @@ Name: **Looped**. Brand guide: [docs/BRAND.md](BRAND.md).
 landfill. And the charities, who get goods they can actually use instead of items they have to
 throw away.
 
-**What a person does.** Films a quick walk around a room on their phone and uploads it. The app
-lists everything it sees, they tick what they're giving away, and they get a plan: what goes to
-which charity, what goes to recycling, and where to drop it off.
+**What a person does.** Picks a room from a list of rooms in the house (kitchen, bedroom, and so
+on), films a quick walk around it on their phone and uploads it. The app lists everything it
+sees and they tick what they're giving away. They go back to the room list and do the next room,
+one at a time. When they're done, they get one plan for the whole house: what goes to which
+charity, what goes to recycling, and where to drop it off.
 
 ## How it works
 

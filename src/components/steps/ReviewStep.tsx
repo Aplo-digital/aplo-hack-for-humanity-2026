@@ -1,8 +1,8 @@
 import { useState, type ReactNode } from "react"
 import {
   Armchair,
-  ArrowRight,
   BedDouble,
+  Check,
   BookOpen,
   CircleHelp,
   CookingPot,
@@ -10,6 +10,7 @@ import {
   Monitor,
   Plus,
   Puzzle,
+  RotateCcw,
   Shirt,
   type LucideIcon,
 } from "lucide-react"
@@ -46,17 +47,20 @@ const CATEGORY_ICONS: Record<Category, LucideIcon> = {
 const plural = (count: number) => `${count} ${count === 1 ? "thing" : "things"}`
 
 export function ReviewStep({
+  roomName,
   initialItems,
-  onMakePlan,
-  onStartAgain,
+  onSave,
+  onFilmAgain,
+  onBack,
 }: {
+  roomName: string
   initialItems: Item[]
-  onMakePlan: (items: Item[]) => void
-  onStartAgain: () => void
+  onSave: (items: Item[]) => void
+  onFilmAgain: () => void
+  onBack: () => void
 }) {
   const [items, setItems] = useState(initialItems)
   const named = items.filter((item) => item.name.trim())
-  const givingCount = named.filter((item) => item.giveAway).length
 
   function update(id: string, patch: Partial<Item>) {
     setItems((current) =>
@@ -86,7 +90,7 @@ export function ReviewStep({
   return (
     <div className="flex flex-1 flex-col gap-6">
       <div className="flex flex-col gap-2">
-        <h1 className={TYPE.pageTitle}>Your piles</h1>
+        <h1 className={TYPE.pageTitle}>{roomName}</h1>
         <p className={TYPE.bodyRelaxed}>
           {items.length > 0
             ? `${plural(items.length)} found. Untick what you're keeping.`
@@ -150,24 +154,25 @@ export function ReviewStep({
         </section>
       ))}
 
-      <Button variant="outline" className="self-start" onClick={addItem}>
-        <Plus size={ICON.md} />
-        Add item
-      </Button>
+      <div className="flex flex-wrap gap-2">
+        <Button variant="outline" onClick={addItem}>
+          <Plus size={ICON.md} />
+          Add item
+        </Button>
+        <Button variant="ghost" onClick={onFilmAgain}>
+          <RotateCcw size={ICON.md} />
+          Film this room again
+        </Button>
+      </div>
 
       <ActionBar>
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="lg" onClick={onStartAgain}>
-            Start again
+          <Button variant="ghost" size="lg" onClick={onBack}>
+            Cancel
           </Button>
-          <Button
-            size="lg"
-            className="flex-1"
-            disabled={givingCount === 0}
-            onClick={() => onMakePlan(named)}
-          >
-            Find homes for these
-            <ArrowRight size={ICON.md} />
+          <Button size="lg" className="flex-1" onClick={() => onSave(named)}>
+            <Check size={ICON.md} />
+            Save room
           </Button>
         </div>
       </ActionBar>

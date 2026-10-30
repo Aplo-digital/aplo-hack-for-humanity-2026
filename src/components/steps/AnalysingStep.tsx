@@ -1,11 +1,19 @@
 import { Skeleton } from "@/components/Skeleton"
 import { TYPE } from "@/components/design-system"
 
-export function AnalysingStep({ fileName }: { fileName: string }) {
+export function AnalysingStep({
+  roomName,
+  fileName,
+}: {
+  roomName: string
+  fileName: string
+}) {
   return (
     <div className="flex flex-col gap-6" aria-busy="true">
       <div className="flex flex-col gap-2">
-        <h1 className={TYPE.pageTitle}>Looking at your video</h1>
+        <h1 className={TYPE.pageTitle}>
+          Looking at your {roomName.toLowerCase()}
+        </h1>
         <p className={TYPE.bodyRelaxed} role="status">
           Shrinking your video, then Gemma watches it… usually under a minute.
         </p>

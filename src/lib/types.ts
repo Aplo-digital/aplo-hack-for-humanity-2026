@@ -38,12 +38,17 @@ export type Destination =
 
 export type PlanGroup = { destination: Destination; items: Item[] }
 
+/** A room in the home. `items` is null until it has been filmed. */
+export type Room = { id: string; name: string; items: Item[] | null }
+
 export type AppState =
-  | { step: "upload" }
-  | { step: "analysing"; fileName: string }
-  | { step: "review"; items: Item[] }
-  | { step: "plan"; items: Item[] }
-  | { step: "error"; message: string }
+  | { step: "welcome" }
+  | { step: "rooms" }
+  | { step: "upload"; roomId: string }
+  | { step: "analysing"; roomId: string; fileName: string }
+  | { step: "review"; roomId: string; items: Item[] }
+  | { step: "plan" }
+  | { step: "error"; roomId: string; message: string }
 
 /** What the browser sends to /api/plan: the plan as plain facts for Gemma. */
 export type PlanFact = {
