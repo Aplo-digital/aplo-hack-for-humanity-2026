@@ -3,6 +3,12 @@
 This is a one-day hackathon project for Hack for Humanity Adelaide (30 October 2026). The team
 is mostly non-technical and builds by talking to you. Read this whole file before you act.
 
+## Our idea
+
+Read `docs/IDEA.md` before building anything. It has the idea, what we tested with Gemma and
+video, the build order and the charity data plan. Follow its build order unless the team
+changes it, and update that file when they do.
+
 ## How to work with this team
 
 - Explain what you are doing in plain English, one step at a time. No jargon without a

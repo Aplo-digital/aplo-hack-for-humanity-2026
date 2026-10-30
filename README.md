@@ -26,6 +26,7 @@ If Gemma answers with two sentences about aged care, you are ready.
 
 ## How we work today
 
+- **Our idea** is in [docs/IDEA.md](docs/IDEA.md): film a room, and the app sorts your things to the right charities.
 - **Pick a theme**: Health, Education or Sustainability. [docs/HACKATHON.md](docs/HACKATHON.md)
   explains each one and the challenges we can enter.
 - **Pick the data**: [data/README.md](data/README.md) lists every dataset. Start with the ones
