@@ -4,6 +4,7 @@ import { z } from "zod"
 import {
   CATEGORIES,
   CONDITIONS,
+  MAX_PHOTOS,
   type Item,
   type PlanFact,
 } from "../src/lib/types.ts"
@@ -12,9 +13,17 @@ const MODEL = "gemma-4-26b-a4b-it"
 // The browser shrinks videos first (src/lib/shrinkVideo.ts); Netlify caps binary bodies at about 4.5 MB.
 export const MAX_UPLOAD_BYTES = 4.5 * 1024 * 1024
 const VIDEO_TYPES = ["video/webm", "video/mp4", "video/quicktime"]
+const PHOTO_TYPES = ["image/jpeg", "image/png", "image/webp"]
 
-const ANALYSE_PROMPT =
-  'List every household item in this footage that someone moving out could donate or dispose of. Return only JSON: a list of objects with keys "item" (short name), "category" (one of: furniture, clothing, electronics, kitchenware, books_media, decor, linen, toys, other), "quantity" (integer), "condition" (good, worn, broken or unsure). Ignore walls, windows, floors and fixtures that stay with the house.'
+const ITEM_FORMAT =
+  'Return only JSON: a list of objects with keys "item" (short name), "category" (one of: furniture, clothing, electronics, kitchenware, books_media, decor, linen, toys, other), "quantity" (integer), "condition" (good, worn, broken or unsure). Ignore walls, windows, floors and fixtures that stay with the house.'
+const VIDEO_PROMPT = `List every household item in this footage that someone moving out could donate or dispose of. ${ITEM_FORMAT}`
+const PHOTOS_PROMPT = `These photos all show one room. List every household item in them that someone moving out could donate or dispose of. Count an item once even if it appears in more than one photo. ${ITEM_FORMAT}`
+
+const Photos = z
+  .array(z.object({ mimeType: z.enum(PHOTO_TYPES), data: z.string().min(1) }))
+  .min(1)
+  .max(MAX_PHOTOS)
 
 /** An error whose message is safe and useful to show the person using the app. */
 export class UserError extends Error {
@@ -75,9 +84,13 @@ export function createGemma(apiKey: string | undefined) {
       if (!VIDEO_TYPES.includes(type)) {
         throw new UserError(415, "Please upload a video file.")
       }
-      if (video.byteLength === 0) throw new UserError(400, "The video was empty.")
+      if (video.byteLength === 0)
+        throw new UserError(400, "The video was empty.")
       if (video.byteLength > MAX_UPLOAD_BYTES) {
-        throw new UserError(413, "That video is too big to send. Try a shorter clip.")
+        throw new UserError(
+          413,
+          "That video is too big to send. Try a shorter clip."
+        )
       }
       const text = await generate(
         [
@@ -90,7 +103,32 @@ export function createGemma(apiKey: string | undefined) {
                   data: Buffer.from(video).toString("base64"),
                 },
               },
-              { text: ANALYSE_PROMPT },
+              { text: VIDEO_PROMPT },
+            ],
+          },
+        ],
+        true
+      )
+      return parseItems(text)
+    },
+
+    // Photos are shrunk to 1024 px in the browser (src/lib/shrinkPhoto.ts). On 30 October one or
+    // two shrunk photos took about 19 s, like a video; full-size photos took 84 to 97 s.
+    async analysePhotos(body: unknown): Promise<Item[]> {
+      const photos = Photos.safeParse((body as { photos?: unknown })?.photos)
+      if (!photos.success) {
+        throw new UserError(
+          400,
+          `Please add between 1 and ${MAX_PHOTOS} photos (JPEG, PNG or WebP).`
+        )
+      }
+      const text = await generate(
+        [
+          {
+            role: "user",
+            parts: [
+              ...photos.data.map((inlineData) => ({ inlineData })),
+              { text: PHOTOS_PROMPT },
             ],
           },
         ],

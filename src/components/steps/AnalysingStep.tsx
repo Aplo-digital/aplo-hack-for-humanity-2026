@@ -3,10 +3,11 @@ import { TYPE } from "@/components/design-system"
 
 export function AnalysingStep({
   roomName,
-  fileName,
+  source,
 }: {
   roomName: string
-  fileName: string
+  /** The video's file name, or "3 photos". */
+  source: string
 }) {
   return (
     <div className="flex flex-col gap-6" aria-busy="true">
@@ -15,9 +16,10 @@ export function AnalysingStep({
           Looking at your {roomName.toLowerCase()}
         </h1>
         <p className={TYPE.bodyRelaxed} role="status">
-          Shrinking your video, then Gemma watches it… usually under a minute.
+          Shrinking it, then Gemma looks for your things… usually under a
+          minute.
         </p>
-        <p className={`${TYPE.caption} truncate`}>{fileName}</p>
+        <p className={`${TYPE.caption} truncate`}>{source}</p>
       </div>
       <div className="grid grid-cols-2 gap-3">
         {["bg-sage", "bg-peach", "bg-peach", "bg-sage"].map((tone, index) => (

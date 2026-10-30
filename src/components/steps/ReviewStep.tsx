@@ -161,7 +161,7 @@ export function ReviewStep({
         </Button>
         <Button variant="ghost" onClick={onFilmAgain}>
           <RotateCcw size={ICON.md} />
-          Film this room again
+          Redo this room
         </Button>
       </div>
 

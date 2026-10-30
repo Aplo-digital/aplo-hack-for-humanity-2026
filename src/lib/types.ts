@@ -11,6 +11,9 @@ export const CATEGORIES = [
 ] as const
 export type Category = (typeof CATEGORIES)[number]
 
+/** Most photos Gemma looks at in one go, for one room. */
+export const MAX_PHOTOS = 10
+
 export const CONDITIONS = ["good", "worn", "broken", "unsure"] as const
 export type Condition = (typeof CONDITIONS)[number]
 
@@ -45,7 +48,7 @@ export type AppState =
   | { step: "welcome" }
   | { step: "rooms" }
   | { step: "upload"; roomId: string }
-  | { step: "analysing"; roomId: string; fileName: string }
+  | { step: "analysing"; roomId: string; source: string }
   | { step: "review"; roomId: string; items: Item[] }
   | { step: "plan" }
   | { step: "error"; roomId: string; message: string }

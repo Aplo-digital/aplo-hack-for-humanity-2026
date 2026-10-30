@@ -7,7 +7,7 @@ import { ReviewStep } from "@/components/steps/ReviewStep"
 import { RoomsStep } from "@/components/steps/RoomsStep"
 import { UploadStep } from "@/components/steps/UploadStep"
 import { WelcomeStep } from "@/components/steps/WelcomeStep"
-import { analyseVideo } from "@/lib/api"
+import { analysePhotos, analyseVideo } from "@/lib/api"
 import { DEFAULT_ROOMS, givingItems, loadRooms, saveRooms } from "@/lib/rooms"
 import type { AppState, Item, Room } from "@/lib/types"
 
@@ -26,10 +26,14 @@ export function App() {
 
   useEffect(() => saveRooms(rooms), [rooms])
 
-  async function handleVideo(roomId: string, file: File) {
-    setState({ step: "analysing", roomId, fileName: file.name })
+  async function analyse(
+    roomId: string,
+    source: string,
+    run: () => Promise<Item[]>
+  ) {
+    setState({ step: "analysing", roomId, source })
     try {
-      const items = await analyseVideo(file)
+      const items = await run()
       setState({ step: "review", roomId, items })
     } catch (error) {
       setState({ step: "error", roomId, message: (error as Error).message })
@@ -78,14 +82,23 @@ export function App() {
       {state.step === "upload" && (
         <UploadStep
           roomName={roomName(state.roomId)}
-          onVideo={(file) => handleVideo(state.roomId, file)}
+          onVideo={(file) =>
+            analyse(state.roomId, file.name, () => analyseVideo(file))
+          }
+          onPhotos={(files) =>
+            analyse(
+              state.roomId,
+              `${files.length} ${files.length === 1 ? "photo" : "photos"}`,
+              () => analysePhotos(files)
+            )
+          }
           onBack={toRooms}
         />
       )}
       {state.step === "analysing" && (
         <AnalysingStep
           roomName={roomName(state.roomId)}
-          fileName={state.fileName}
+          source={state.source}
         />
       )}
       {state.step === "review" && (

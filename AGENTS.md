@@ -45,7 +45,7 @@ it's an MVP that runs on one laptop.
 | `src/lib/route.ts` | `routeItems`: where each item goes. Keep it pure and keep `route.test.ts` passing |
 | `data/charities.csv` | Charity rules the team edits in Excel: charity, category, accepted (yes/some), notes, source link |
 | `server/gemma.ts` | Every Gemma call. Shrinks videos with ffmpeg-static first |
-| `vite.config.ts` | Wires `POST /api/analyse` and `POST /api/plan` into the dev server |
+| `vite.config.ts` | Wires `POST /api/analyse`, `POST /api/analyse-photos` and `POST /api/plan` into the dev server |
 
 Rules:
 - The Gemini key is read on the server only (`loadEnv` in `vite.config.ts`). Never use
@@ -63,7 +63,9 @@ Rules:
   level minimal. Don't switch to `gemma-4-31b-it`: we measured 30 to 50 seconds per answer.
 - Keep the SDK retry options in `server/gemma.ts`. On 30 October about half of single calls
   failed with "500 INTERNAL"; with 5 retries, 10 of 10 succeeded in 2 to 7 seconds.
-- Send video, not photos: a single photo took 84 to 97 seconds, a shrunk video 15 to 20.
+- Shrink before sending. A full-size photo took 84 to 97 seconds; shrunk to 1024 px
+  (`src/lib/shrinkPhoto.ts`), one or two photos took 11 to 19. A shrunk video takes 15 to 20.
+  People can send a video or up to 10 photos per room (`POST /api/analyse-photos`).
 - Give Gemma only the facts it needs and tell it to use only those. If a call fails, show a
   friendly message and a "Try again" button; the app must not crash.
 

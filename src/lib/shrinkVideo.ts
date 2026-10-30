@@ -23,15 +23,22 @@ function loadVideo(file: File): Promise<HTMLVideoElement> {
   return new Promise((resolve, reject) => {
     video.onloadeddata = () => resolve(video)
     video.onerror = () =>
-      reject(new Error("We couldn't read that video. Try another one, or record it again."))
+      reject(
+        new Error(
+          "We couldn't read that video. Try another one, or record it again."
+        )
+      )
   })
 }
 
 export async function shrinkVideo(file: File): Promise<Blob> {
-  const mimeType = typeof MediaRecorder === "undefined" ? undefined : pickMimeType()
+  const mimeType =
+    typeof MediaRecorder === "undefined" ? undefined : pickMimeType()
   if (!mimeType) {
     if (file.size <= MAX_UPLOAD_BYTES) return file
-    throw new Error("This browser can't shrink videos. Try Chrome, or a clip under 4 MB.")
+    throw new Error(
+      "This browser can't shrink videos. Try Chrome, or a clip under 4 MB."
+    )
   }
 
   const video = await loadVideo(file)
@@ -41,7 +48,8 @@ export async function shrinkVideo(file: File): Promise<Blob> {
     canvas.width = Math.round((video.videoWidth * scale) / 2) * 2
     canvas.height = Math.round((video.videoHeight * scale) / 2) * 2
     const context = canvas.getContext("2d")
-    if (!context) throw new Error("This browser can't shrink videos. Try Chrome.")
+    if (!context)
+      throw new Error("This browser can't shrink videos. Try Chrome.")
 
     const recorder = new MediaRecorder(canvas.captureStream(15), {
       mimeType,
@@ -49,7 +57,9 @@ export async function shrinkVideo(file: File): Promise<Blob> {
     })
     const chunks: Blob[] = []
     recorder.ondataavailable = (event) => chunks.push(event.data)
-    const stopped = new Promise<void>((resolve) => (recorder.onstop = () => resolve()))
+    const stopped = new Promise<void>(
+      (resolve) => (recorder.onstop = () => resolve())
+    )
 
     let drawing = true
     const draw = () => {
@@ -66,7 +76,8 @@ export async function shrinkVideo(file: File): Promise<Blob> {
     await video.play()
     await new Promise<void>((resolve, reject) => {
       video.onended = () => resolve()
-      video.onerror = () => reject(new Error("The video stopped playing part way through."))
+      video.onerror = () =>
+        reject(new Error("The video stopped playing part way through."))
     })
     drawing = false
     recorder.stop()
@@ -74,7 +85,9 @@ export async function shrinkVideo(file: File): Promise<Blob> {
 
     const small = new Blob(chunks, { type: mimeType.split(";")[0] })
     if (small.size > MAX_UPLOAD_BYTES) {
-      throw new Error("That video is too long to send. Try a clip under 2 minutes.")
+      throw new Error(
+        "That video is too long to send. Try a clip under 2 minutes."
+      )
     }
     return small
   } finally {

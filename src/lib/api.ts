@@ -1,4 +1,5 @@
 import type { Item, PlanFact } from "./types"
+import { shrinkPhoto } from "./shrinkPhoto"
 import { shrinkVideo } from "./shrinkVideo"
 
 async function postJson<T>(url: string, init: RequestInit): Promise<T> {
@@ -22,6 +23,15 @@ export async function analyseVideo(file: File): Promise<Item[]> {
   const { items } = await postJson<{ items: Item[] }>("/api/analyse", {
     headers: { "Content-Type": video.type || "video/mp4" },
     body: video,
+  })
+  return items
+}
+
+export async function analysePhotos(files: File[]): Promise<Item[]> {
+  const photos = await Promise.all(files.map(shrinkPhoto))
+  const { items } = await postJson<{ items: Item[] }>("/api/analyse-photos", {
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ photos }),
   })
   return items
 }

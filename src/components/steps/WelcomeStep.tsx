@@ -13,8 +13,8 @@ export function WelcomeStep({ onBegin }: { onBegin: () => void }) {
           Clearing a home doesn't have to mean throwing it away.
         </h1>
         <p className={TYPE.bodyRelaxed}>
-          Film a room. We'll help you find the people who'll love your things
-          next.
+          Film or photograph a room. We'll help you find the people who'll love
+          your things next.
         </p>
       </div>
       <ActionBar>

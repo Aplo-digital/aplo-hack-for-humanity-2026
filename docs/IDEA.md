@@ -7,7 +7,7 @@ landfill. And the charities, who get goods they can actually use instead of item
 throw away.
 
 **What a person does.** Picks a room from a list of rooms in the house (kitchen, bedroom, and so
-on), films a quick walk around it on their phone and uploads it. The app lists everything it
+on), films a quick walk around it or takes a few photos, and uploads them. The app lists everything it
 sees and they tick what they're giving away. They go back to the room list and do the next room,
 one at a time. When they're done, they get one plan for the whole house: what goes to which
 charity, what goes to recycling, and where to drop it off.
@@ -37,7 +37,9 @@ phone video ──► Gemma 4 watches it and lists the items (name, category, ho
 | Same video shrunk to 480p, 2 frames a second (560 KB) | Works in **21 s**, nearly the same list |
 | Condition ("good", "worn", "broken") | Gemma says "good" for almost everything. Let the person set it |
 
-So: **take video, not photos**, shrink it before sending, and let the person correct the list.
+| Same room as 1 or 2 photos shrunk to 1024 px JPEG (about 75 KB each) | Works in **11 to 19 s**, same items as the video |
+
+So: **shrink before sending** (video or photos), and let the person correct the list.
 
 ## Build order (each step should work before the next)
 

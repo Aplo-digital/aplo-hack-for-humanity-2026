@@ -65,8 +65,8 @@ export function RoomsStep({
       <div className="flex flex-col gap-2">
         <h1 className={TYPE.pageTitle}>Pick a room</h1>
         <p className={TYPE.bodyRelaxed}>
-          Do one room at a time. Film it, check the list, then come back here
-          for the next one.
+          Do one room at a time. Film or photograph it, check the list, then
+          come back here for the next one.
         </p>
         {doneCount > 0 && (
           <p className={TYPE.caption}>
@@ -106,7 +106,7 @@ export function RoomsStep({
                   <span className="text-sm font-medium">{room.name}</span>
                   <span className="text-xs text-foreground/65">
                     {giving === undefined
-                      ? "Tap to film"
+                      ? "Tap to start"
                       : `${plural(giving)} to give`}
                   </span>
                 </span>
