@@ -47,9 +47,13 @@ So: **take video, not photos**, shrink it before sending, and let the person cor
    pandas, not with if-statements.
 3. **The plan.** Group items by charity, then Gemma writes a short, friendly plan using only the
    matched rows.
-4. **Nearest shop** (stretch). Filter the ACNC charity register to SA and the person's postcode.
-5. **Impact line for the pitch** (stretch). Use the waste data (S10 in `data/extras/`) to say how
-   much SA sends to landfill.
+4. **Nearest shop** (stretch). Map the op shops in `data/charity/osm_sa_charity_shops.csv`
+   closest to the person's postcode or location.
+5. **Match to need** (stretch). Use the "who it helps" flags in
+   `data/charity/acnc_sa_charities.csv` to suggest local charities, such as kitchenware to a
+   refugee support charity.
+6. **Impact line for the pitch.** SA sent about 28,800 tonnes of textiles, leather and rubber
+   to landfill in 2024–25 (S10 waste data, details in `data/charity/README.md`).
 
 ## The charity table: what we know so far
 
@@ -72,11 +76,17 @@ Check each charity's own donation page before the demo and put the link in the `
 
 ## Data
 
-| Dataset | Source | Licence | Credit line |
+Details, limits and how to refresh: [data/charity/README.md](../data/charity/README.md).
+
+| Dataset | File | Licence | Credit line |
 | --- | --- | --- | --- |
-| ACNC Register of Australian charities (CSV, updated weekly) | [data.gov.au](https://data.gov.au/data/dataset/acnc-register) | CC BY 3.0 AU | Check the dataset page for the exact wording |
-| Our charity table (`data/charities.csv`) | Each charity's donation guide, linked per row | Our own, MIT | Made by our team from each charity's public donation guide |
-| S10 National Waste and Resource Recovery (optional) | `data/extras/3_sustainability/S10_nwrr-database-2026/` | See its README | See `data/README.md` |
+| ACNC Registered Charities, filtered to SA (6,347) | `data/charity/acnc_sa_charities.csv` | CC BY 3.0 AU | Australian Charities and Not-for-profits Commission, ACNC Registered Charities, data.gov.au, licensed under CC BY 3.0 AU. |
+| SA charity and second-hand shops from OpenStreetMap (131) | `data/charity/osm_sa_charity_shops.csv` | ODbL | © OpenStreetMap contributors |
+| Our charity rules table (to make today) | `data/charities.csv` | Ours, MIT | Made by our team from each charity's public donation guide (link per row) |
+| S10 National Waste and Resource Recovery Database 2026 | `data/extras/3_sustainability/S10_nwrr-database-2026/` | CC BY 2.5 AU | Department of Climate Change, Energy, the Environment and Water. 2026. National Waste and Resource Recovery Database 2026, data.gov.au. |
+
+No open dataset says which charity accepts which items, so that table is ours to make. Every
+row needs a link to the charity's own donation page.
 
 ## Watch out for
 

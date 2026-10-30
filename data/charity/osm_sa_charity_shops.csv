@@ -1,0 +1,132 @@
+name,brand,shop,lat,lon,street,suburb,postcode,opening_hours,website,osm_id
+,,charity,-35.4474043,138.3185295,,,,,,node/5338109518
+,,second_hand,-34.8894602,138.5137037,,,,,,node/11018975177
+,,second_hand,-34.8596225,138.5132275,,,,,,node/11853393307
+,,charity,-34.9645685,138.5902593,,,,,,node/13572065487
+,,charity,-34.8340863,138.685673,,,,,,node/14211219497
+,,charity,-34.1709476,140.7476097,12 Murtho Street,Renmark,5341,,,way/244238339
+2nd Market,,second_hand,-34.9308445,138.5973105,Market Street,Adelaide,,,,node/13591925505
+AWR,,charity,-34.8463287,138.5456537,17 Francis Road,,,Mo-Sa 08:00-16:00; Su 09:00-15:00,https://www.awr.org.au/,node/11952912673
+Aggies Op Shop,,second_hand,-34.9510823,138.6078838,,,,Mo-Fr 09:30-16:00; Sa 09:30-13:00; PH off,,node/13233766870
+Animal Welfare League,,charity,-34.5989234,138.7482442,,,,,,node/11347921391
+Animal Welfare League,,charity,-34.8453091,138.5057275,,,,,,node/12133576786
+Beautiful Valley Op-Shop,,charity,-32.6506705,138.0989123,30 Horrocks Highway,Wilmington,5485,,,node/9669524991
+Bluebird Traders,,second_hand,-33.9634386,137.7148359,52 Graves Street,Kadina,5554,Mo-Fr 10:00-15:00,,node/421198246
+Cadell Valley Op Shop,,second_hand,-34.056118,139.7721886,41 Cadell Valley Road,,,"Tu,Th 09:00-12:00; Su 10:00-14:00",,node/9661751238
+Chaos Bazaar,,charity,-34.9637074,138.5904233,,,,,,node/13572065490
+Charity Shop,,second_hand,-35.0262553,138.8078859,,,,,,node/3780652986
+Cleve Christian Bookshop Op Shop,,second_hand,-33.7026989,136.4938023,26 Fourth Street,Cleve,5640,,,node/9676331900
+Cowell Community Op Shop,,second_hand,-33.6835064,136.9234883,,,,,,node/9671558690
+Cummins Community Op Shop,,second_hand,-34.2636862,135.7270883,,,,,,node/9696578635
+Elcies,,charity,-34.8383194,138.4840787,,,,Mo-Sa 09:30-17:00; Su 10:00-16:00,,node/11799132271
+Elliston Treasures Op Shop,,second_hand,-33.6471071,134.8910657,,,,,,node/9685173697
+Elsies,,second_hand,-34.9213508,138.6282501,The Parade,,,,,node/13909573217
+Eudunda Community Op-Shop,,second_hand,-34.1718903,139.0843629,,,,,,node/9662264835
+Goodwill,,charity,-34.7632921,138.6461121,,,,Mo-Fr 09:00-16:30; Sa 09:30-16:30,,node/13108167010
+Gumeracha Op Shop,,second_hand,-34.8223158,138.8859624,,,,,,way/757991583
+InVogue Op Shop,,charity,-34.7732508,138.6622742,,,,,,node/4572425825
+Island Care Op Shop,,charity,-35.6499373,137.6380691,,,,,,node/14201102940
+Junktion,,second_hand,-35.0750908,138.5630693,,,,,https://junktion.org/,way/568842894
+Lameroo Op Shop,,charity,-35.3288816,140.5176432,,,,,,way/1472134075
+Lifeline Shop,Lifeline,charity,-37.8277304,140.7788386,,,,,,node/3571221323
+Lifeline Shop,Lifeline,charity,-33.9303297,137.627065,,,,,,node/5733687284
+Lifeline Shop,Lifeline,charity,-34.0677393,137.5918568,16-18 Ellen Street,Moonta,5558,,,node/13505354097
+Lifeline Shop,Lifeline,charity,-37.8321006,140.7900407,,,,,,way/784782996
+Little shop of treasures,,second_hand,-34.6710544,138.8906424,,,,,,way/312157899
+Lock Op Shop,,second_hand,-33.5683885,135.7570848,,,,,,node/9677019641
+MOSH House,,charity,-34.9187109,138.5728225,86 George Street,Thebarton,5031,Mo-Sa 10:30-16:30,,way/329079516
+Mannum Community Op Shop,,second_hand,-34.9134054,139.3121645,85 Randell Street,,,,,way/1537357518
+My Dead Grandpa,,second_hand,-34.9267334,138.5926234,,,,,,node/13357486956
+Nairne Market,,second_hand,-35.0367816,138.9133564,,,,,,way/902556758
+North East Salvos,,charity,-34.8687768,138.6398217,345 North East Road,Hillcrest,5086,,https://www.salvationarmy.org.au/locations/south-australia/s036/north-east-salvos/,way/1497326498
+Op Shop,,second_hand,-34.5655346,139.6001878,,,,,,node/10703670103
+Op Shop,,second_hand,-33.6846668,138.9397305,,,,,,node/14106724001
+Op-Shop,,second_hand,-33.0491205,135.4648253,,,,,,node/9691110019
+Orroroo's Second Chance,,second_hand,-32.734622,138.6139949,,,,,,node/4066166722
+Pathway Community Centre,,second_hand,-34.8186446,138.6804614,,,,,https://pathway.clovie.com.au/,way/192837130
+Pound Puppy Vintage,,second_hand,-34.9237111,138.6099418,238 Grenfell Street,,,We 12:00-15:00; Th-Sa 11:00-16:00,,node/11186709747
+Puddle Jumpers,,charity,-34.8602485,138.5127082,,,,,,node/11853333807
+RSPCA,RSPCA,charity,-34.9059592,138.5302939,,,,,,node/12762303190
+RSPCA,RSPCA,charity,-34.8739042,138.6032341,,,,,,node/12774408988
+RSPCA Op Shop,,charity,-34.7607339,138.6461049,,,,Mo-Sa 10:00-17:00; Su off,,node/14108505838
+RSPCA OpShop,RSPCA,charity,-34.8397403,138.4873509,106 Semaphore Road,,,Mo-Fr 10:00-16:15; Sa-Su 11:00-16:15,https://www.rspcasa.org.au/support/thrift-shops/,node/3926247771
+Red Cross,,charity,-34.922348,138.6100451,284 Rundle Street,,,Mo-Th 10:00-18:00; Fr 10:00-20:00; Sa 10:00-17:30; Su 12:00-17:00,https://www.redcross.org.au/stores-store-locator.aspx,node/4723415808
+Red Cross,,charity,-34.0676096,137.5920438,Ellen Street,Moonta,5558,,,node/13505354095
+Red Cross,,charity,-34.9216296,138.6296684,,,,,,node/14028612950
+Red Cross Shop,,charity,-35.021552,138.6145157,354 Shepherds Hill Road,Blackwood,5051,,https://www.redcross.org.au/places/retail-stores/blackwood/,node/13431555097
+Regal Chickens,,second_hand,-34.7188527,135.8552861,18 Lewis Street,Port Lincoln,5606,,,way/808643431
+Rotary Thrift Shop,,second_hand,-34.9478243,138.6069646,,,,,,node/13913649290
+Salvos,Salvos,charity,-34.8452366,138.5056739,98 Commercial Road,Port Adelaide,,,,node/2534916822
+Salvos,Salvos,charity,-35.1397673,138.4870309,,,,,,node/5308524399
+Salvos,Salvos,charity,-35.1054312,138.5258059,140 Sherriffs Road,,,Mo-Fr 09:00-17:30; Sa 09:00-17:00,https://www.salvosstores.com.au/stores/sa/5162-morphett-vale-585,node/5330994415
+Salvos,Salvos,charity,-34.8982226,138.5629161,449 Port Road,Croydon,5008,,https://www.salvosstores.com.au/stores/sa/5008-croydon-537,node/6566934242
+Salvos,Salvos,charity,-35.1725462,138.4839024,,,,Mo-Fr 09:00-17:30; Sa 09:00-17:00; Su off,,node/12629558106
+Salvos,Salvos,charity,-34.8361901,138.6402087,1-11 RM Williams Drive,,5098,Mo-Fr 09:00-17:30; Sa 09:00-17:00; Su off,,node/13319097358
+Salvos,Salvos,charity,-34.7921734,138.6434384,1A Lawrence Hargrave Way,,,Mo-Fr 09:00-17:30; Sa 09:00-17:00; Su off,https://www.salvosstores.com.au/,node/13640978759
+Salvos,Salvos,charity,-34.8742588,138.6026349,,,,,,node/14093913215
+Salvos,Salvos,charity,-34.9265995,138.5169988,,,,,,node/14203727527
+Salvos,Salvos,charity,-34.7629911,138.6444111,31 John Street,,,"Mo-We,Fr 09:00-17:30; Th 09:00-19:00; Sa 09:00-17:00; Su off",https://www.salvosstores.com.au/,way/132761428
+Salvos,Salvos,charity,-34.8332986,138.6852465,,,,,,way/176953126
+Salvos,Salvos,charity,-35.0149531,138.5223098,,,,,,way/581499111
+Salvos,Salvos,charity,-34.8630832,138.6484421,460 North East Road,Windsor Gardens,5087,Mo-Fr 09:00-17:30; Sa 09:00-17:00,https://www.salvosstores.com.au/stores/sa/5087-windsor-gardens-555,way/966481340
+Save The Children,,charity,-34.8739229,138.6033169,,,,,,node/14093913216
+Save the Children,,charity,-34.9138042,138.6575127,,,,Mo-Fr 10:00-16:00; Sa 09:00-14:00,,node/5909717126
+Save the Children,,charity,-34.761167,138.647387,68-84 John Street,,,Mo-Sa 09:00-17:00; Su 11:00-16:00,https://www.savethechildren.org.au/,node/13640984851
+Save the Children,,charity,-34.9213004,138.6295182,The Parade,,,,,node/13911872878
+Save the Children Op Shop,,charity,-35.2726248,138.5554505,18 High Street,,,,,node/12787356501
+Savers,Savers,second_hand,-35.140891,138.488405,,,,,,node/5308524393
+Savers,Savers,second_hand,-34.8720406,138.5831184,252 Churchill Road,,,"Mo-We,Fr 09:00-19:00; Th 09:00-21:00; Sa 09:00-17:00; Su 10:00-17:00",https://www.savers.com.au/,node/13865077190
+Seaford Christian Churches Op Shop,,charity,-35.1863297,138.4807618,,,,"Mo,We-Fr 09:00-16:00; Tu,Sa-Su off",,node/12350655327
+Second Chance Op-Shop,,charity,-37.1650789,139.7610578,,,,,,node/7106451103
+St Mary's Parish Op Shop,,charity,-34.9966017,138.5763147,,,,,,way/1191383088
+Station Place,,second_hand,-34.9066262,138.5748752,,,,,,node/14028612898
+Tarlee Second Hand and Musical,,second_hand,-34.273461,138.7709686,,,,,,node/10701406672
+The Ground Floor Opportunity Shop,,second_hand,-34.9142935,139.3114035,103 Randell Street,,,,,way/1537357508
+The Salvation Army,The Salvation Army,charity,-34.6824839,138.6881008,2C Morialta Drive,,,Mo-Fr 09:00-17:30; Sa 09:00-17:00,https://salvosstores.com.au/,node/3810870261
+The Salvation Army,The Salvation Army,charity,-34.7258756,135.859981,11 Blackman Place,,,Mo-Fr 09:30-14:30; Sa 09:00-13:00,,node/4863140035
+The Salvation Army,The Salvation Army,charity,-34.8287298,138.6870811,,,,,,node/5309525673
+The Salvation Army,The Salvation Army,charity,-35.1396915,138.4735366,24 Beach Road,Christies Beach,,,,node/5317529068
+The Salvation Army,The Salvation Army,charity,-34.9218003,138.636471,,,,Mo-Sa 09:00-17:00; Su off,,node/6920213256
+The Salvation Army,The Salvation Army,charity,-34.7671965,138.6226704,,,,,,node/8994996286
+The Salvation Army,The Salvation Army,charity,-34.7208905,138.6703172,,,,,,node/10805853336
+The Salvation Army,The Salvation Army,charity,-34.6034124,138.7484314,1C Julian Terrace,,,Mo-Fr 09:00-17:30; Sa 09:00-17:00,,node/11368192095
+The Salvation Army,The Salvation Army,charity,-34.9639131,138.5908677,,,,,,node/13572065489
+The Salvation Army,The Salvation Army,charity,-34.9339954,138.5946017,422-424 Morphett Street,,,,,way/275145314
+The Salvation Army,The Salvation Army,charity,-34.9141133,138.6595305,,,,,,way/484847527
+The Salvation Army,The Salvation Army,charity,-35.135176,138.5172134,,,,,,way/554036010
+The Salvation Army,The Salvation Army,charity,-35.0290409,138.5576995,,,,,,way/579555545
+The Salvation Army,The Salvation Army,charity,-35.0185125,138.5414851,,,,,,way/587471857
+The Salvation Army,The Salvation Army,charity,-34.2863762,140.6004187,9 William Street,,,Mo-Fr 09:00-17:00; Sa 09:00-14:00,https://www.salvosstores.com.au/stores/sa/5343-berri-560,way/628219189
+The Treasure Shed,,charity,-34.852336,138.5164918,,,,,,node/2406792836
+The Western 2nd Hard Store,,second_hand,-34.8601714,138.5126602,,,,,,node/11853333808
+Thrift Shop,,second_hand,-35.2612347,140.9058726,,,,,,node/10705702340
+Tweedehands Preloved Market,,second_hand,-34.8372683,138.6782796,,,,,,way/1498768552
+Uniting Church Op Shop,,second_hand,-33.138576,136.4207119,,,,,,node/9716747480
+Uniting Church Op Shop,,second_hand,-33.6838849,136.9255011,,,,,,node/10690054877
+Unity Op Shop,,charity,-34.7288174,135.858623,,,,,,node/4863140237
+Vinnies,Vinnies,charity,-34.8448115,138.6627571,,,,,,node/1369689940
+Vinnies,Vinnies,charity,-34.8387566,138.4843133,57A Semaphore Road,Semaphore,5019,"Mo-Fr 09:30-17:00, Sa,Su,PH 10:30-16:30",,node/2903668302
+Vinnies,Vinnies,charity,-35.0163859,138.5230848,,,,,,node/5563730215
+Vinnies,Vinnies,charity,-34.9444008,138.6217184,,,,,,node/6215361850
+Vinnies,Vinnies,charity,-34.8853717,138.6593504,,,,,,node/8787727515
+Vinnies,Vinnies,charity,-34.7247486,135.8602561,10 Edinburgh Street,,,,,node/9712939081
+Vinnies,Vinnies,charity,-34.9258818,138.5956294,,,,,,node/11252101674
+Vinnies,Vinnies,charity,-34.6004386,138.7490674,48 Murray Street,,,Mo-Fr 09:00-16:30; Sa 09:00-15:00,https://www.vinnies.org.au/sa/shops/vinnies-gawler/,node/11368192076
+Vinnies,Vinnies,charity,-34.9216699,138.6294546,70 The Parade,Norwood,5067,Mo-Fr 09:30-17:00; Sa 09:30-16:00,https://www.vinnies.org.au/sa/shops/vinnies-norwood/,node/12118412867
+Vinnies,Vinnies,charity,-34.8117003,138.5015989,356 Victoria Road,Taperoo,5017,Tu-Sa 09:30-17:00,https://www.vinnies.org.au/sa/shops/vinnies-taperoo/,node/12118415331
+Vinnies,Vinnies,charity,-34.3748806,137.6728688,,,,,,node/12118429345
+Vinnies,Vinnies,charity,-34.8981462,138.5628021,449 Port Road,Croydon,5008,Tu-Fr 09:30-17:00; Sa 09:00-17:00,https://www.vinnies.org.au/sa/shops/vinnies-croydon-sa/,node/12118446987
+Vinnies,Vinnies,charity,-34.8887572,138.5940174,92A Prospect Road,Prospect,5082,Tu-Fr 09:30-16:00,https://www.vinnies.org.au/sa/shops/vinnies-prospect/,node/12118451019
+Vinnies,Vinnies,charity,-34.9058784,138.5313063,308 Grange Road,Kidman Park,5025,Mo 09:00-16:45; Tu-Sa 09:00-17:00; Su 11:00-16:00,https://www.vinnies.org.au/sa/shops/vinnies-kidman-park/,node/12118459910
+Vinnies,Vinnies,charity,-34.9759709,138.6074453,,,,,,node/13208009700
+Vinnies,Vinnies,charity,-34.7617886,138.6476955,,,,,,node/13366371303
+Vinnies,,charity,-35.119558,138.5221818,,,,,,node/13444035971
+Vinnies,Vinnies,charity,-37.8308287,140.7863695,,,,,,way/472415880
+Vinnies,Vinnies,charity,-35.2572106,139.4570343,,,,,,way/1168250491
+Vinnies,Vinnies,charity,-35.2543637,139.4569845,,,,,,way/1169006666
+Vinnies,Vinnies,charity,-33.9610416,137.7121135,7 Doswell Terrace,Kadina,,Mo-Fr 10:00-16:00,https://www.vinnies.org.au/sa/shops/vinnies-kadina/,way/1308596036
+Vinnies,Vinnies,charity,-34.8687031,138.5116651,,,,,,way/1424421388
+Waikerie Rotary Opp Shop,,charity,-34.1793305,139.9845495,3A Coombe Terrace,Waikerie,5330,Mo-Fr 09:00-16:00; Sa 09:30-11:30,,node/14074417631
+Worn again,,charity,-34.8459738,138.5025543,24 Quebec Street,Port Adelaide,5015,"We-Fr 09:30-16:00, Sa 09:30-14:30",https://anchorchurchpa.org.au/worn-again/,node/2559441718
+Yankalilla Brickabrack Second Hand Store,,charity,-35.4576587,138.3508193,,,,,,node/5338409963
+meals on wheels,,charity,-35.1311125,138.4815757,Gulfview Road,Christies Beach,5165,,,way/545382279
