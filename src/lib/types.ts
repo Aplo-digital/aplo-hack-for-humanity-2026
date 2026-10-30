@@ -44,3 +44,10 @@ export type AppState =
   | { step: "review"; items: Item[] }
   | { step: "plan"; items: Item[] }
   | { step: "error"; message: string }
+
+/** What the browser sends to /api/plan: the plan as plain facts for Gemma. */
+export type PlanFact = {
+  destination: string
+  notes: string
+  items: { name: string; quantity: number }[]
+}
