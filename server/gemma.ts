@@ -1,13 +1,5 @@
-import { execFile } from "node:child_process"
 import { randomUUID } from "node:crypto"
-import { createWriteStream } from "node:fs"
-import { mkdtemp, readFile, rm } from "node:fs/promises"
-import { tmpdir } from "node:os"
-import path from "node:path"
-import { pipeline } from "node:stream/promises"
-import { promisify } from "node:util"
 import { GoogleGenAI, ThinkingLevel } from "@google/genai"
-import ffmpegPath from "ffmpeg-static"
 import { z } from "zod"
 import {
   CATEGORIES,
@@ -17,7 +9,9 @@ import {
 } from "../src/lib/types.ts"
 
 const MODEL = "gemma-4-26b-a4b-it"
-export const MAX_UPLOAD_BYTES = 200 * 1024 * 1024
+// The browser shrinks videos first (src/lib/shrinkVideo.ts); Netlify caps binary bodies at about 4.5 MB.
+export const MAX_UPLOAD_BYTES = 4.5 * 1024 * 1024
+const VIDEO_TYPES = ["video/webm", "video/mp4", "video/quicktime"]
 
 const ANALYSE_PROMPT =
   'List every household item in this footage that someone moving out could donate or dispose of. Return only JSON: a list of objects with keys "item" (short name), "category" (one of: furniture, clothing, electronics, kitchenware, books_media, decor, linen, toys, other), "quantity" (integer), "condition" (good, worn, broken or unsure). Ignore walls, windows, floors and fixtures that stay with the house.'
@@ -76,35 +70,33 @@ export function createGemma(apiKey: string | undefined) {
   }
 
   return {
-    async analyseVideo(upload: AsyncIterable<Buffer>): Promise<Item[]> {
-      const dir = await mkdtemp(path.join(tmpdir(), "pass-it-on-"))
-      try {
-        const original = path.join(dir, "upload")
-        const small = path.join(dir, "small.mp4")
-        await saveUpload(upload, original)
-        await shrinkVideo(original, small)
-        const video = await readFile(small)
-        const text = await generate(
-          [
-            {
-              role: "user",
-              parts: [
-                {
-                  inlineData: {
-                    mimeType: "video/mp4",
-                    data: video.toString("base64"),
-                  },
-                },
-                { text: ANALYSE_PROMPT },
-              ],
-            },
-          ],
-          true
-        )
-        return parseItems(text)
-      } finally {
-        await rm(dir, { recursive: true, force: true })
+    async analyseVideo(video: Uint8Array, mimeType: string): Promise<Item[]> {
+      const type = mimeType.split(";")[0].trim()
+      if (!VIDEO_TYPES.includes(type)) {
+        throw new UserError(415, "Please upload a video file.")
       }
+      if (video.byteLength === 0) throw new UserError(400, "The video was empty.")
+      if (video.byteLength > MAX_UPLOAD_BYTES) {
+        throw new UserError(413, "That video is too big to send. Try a shorter clip.")
+      }
+      const text = await generate(
+        [
+          {
+            role: "user",
+            parts: [
+              {
+                inlineData: {
+                  mimeType: type,
+                  data: Buffer.from(video).toString("base64"),
+                },
+              },
+              { text: ANALYSE_PROMPT },
+            ],
+          },
+        ],
+        true
+      )
+      return parseItems(text)
     },
 
     async writePlanSummary(body: unknown): Promise<string> {
@@ -118,60 +110,6 @@ export function createGemma(apiKey: string | undefined) {
       const text = await generate(planPrompt(facts.data), false)
       return text.trim()
     },
-  }
-}
-
-async function saveUpload(upload: AsyncIterable<Buffer>, file: string) {
-  let bytes = 0
-  await pipeline(
-    upload,
-    async function* (chunks: AsyncIterable<Buffer>) {
-      for await (const chunk of chunks) {
-        bytes += chunk.length
-        if (bytes > MAX_UPLOAD_BYTES) {
-          throw new UserError(
-            413,
-            "That video is over 200 MB. Try a shorter clip."
-          )
-        }
-        yield chunk
-      }
-    },
-    createWriteStream(file)
-  )
-  if (bytes === 0) throw new UserError(400, "The video was empty.")
-}
-
-const run = promisify(execFile)
-
-// 480p, 2 frames a second, no sound: a 53 MB phone video becomes about 560 KB and Gemma lists nearly the same items.
-async function shrinkVideo(input: string, output: string) {
-  if (!ffmpegPath)
-    throw new Error("ffmpeg-static has no binary for this computer")
-  try {
-    await run(ffmpegPath, [
-      "-y",
-      "-i",
-      input,
-      "-vf",
-      "scale=-2:480,fps=2",
-      "-c:v",
-      "libx264",
-      "-preset",
-      "veryfast",
-      "-crf",
-      "30",
-      "-pix_fmt",
-      "yuv420p",
-      "-an",
-      output,
-    ])
-  } catch (error) {
-    console.error("[ffmpeg]", error)
-    throw new UserError(
-      422,
-      "We couldn't read that video. Try another one, or record it again."
-    )
   }
 }
 

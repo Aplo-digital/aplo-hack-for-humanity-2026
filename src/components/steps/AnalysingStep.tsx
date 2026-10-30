@@ -8,7 +8,7 @@ export function AnalysingStep({ fileName }: { fileName: string }) {
       <div className="flex flex-col gap-2">
         <h1 className={TYPE.pageTitle}>Looking at your video</h1>
         <p className={TYPE.bodyRelaxed} role="status">
-          Gemma is watching your video… usually 15–40 seconds.
+          Shrinking your video, then Gemma watches it… usually under a minute.
         </p>
         <p className={`${TYPE.caption} truncate`}>{fileName}</p>
       </div>

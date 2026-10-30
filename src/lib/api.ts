@@ -1,4 +1,5 @@
 import type { Item, PlanFact } from "./types"
+import { shrinkVideo } from "./shrinkVideo"
 
 async function postJson<T>(url: string, init: RequestInit): Promise<T> {
   let response: Response
@@ -6,7 +7,7 @@ async function postJson<T>(url: string, init: RequestInit): Promise<T> {
     response = await fetch(url, { method: "POST", ...init })
   } catch {
     throw new Error(
-      "Couldn't reach the app's server. Is npm run dev still running?"
+      "Couldn't reach the app's server. Check your connection and try again."
     )
   }
   const body = await response.json().catch(() => ({}))
@@ -17,9 +18,10 @@ async function postJson<T>(url: string, init: RequestInit): Promise<T> {
 }
 
 export async function analyseVideo(file: File): Promise<Item[]> {
+  const video = await shrinkVideo(file)
   const { items } = await postJson<{ items: Item[] }>("/api/analyse", {
-    headers: { "Content-Type": file.type || "video/mp4" },
-    body: file,
+    headers: { "Content-Type": video.type || "video/mp4" },
+    body: video,
   })
   return items
 }
