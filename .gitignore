@@ -21,3 +21,6 @@ data/4_foundation/F12_asgs-edition3-boundaries/*.zip
 # Node and Vite
 node_modules/
 dist/
+
+# Local Netlify folder
+.netlify
