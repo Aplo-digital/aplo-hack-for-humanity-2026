@@ -37,8 +37,14 @@ is mostly non-technical and builds by talking to you. Read this whole file befor
 ## Gemma 4 (required for the "Best Use of Gemma 4" challenge)
 
 - Model `gemma-4-26b-a4b-it` through the Gemini API with the `google-genai` SDK. Copy the
-  pattern in `hello_gemma.py`: `load_dotenv()`, `genai.Client()`, and
-  `thinking_level="minimal"`. Without "minimal", answers take 20 to 60 seconds.
+  pattern in `hello_gemma.py`: `load_dotenv()`, a client with retries, and
+  `thinking_level="minimal"`. Without "minimal", answers take 20 to 60 seconds. Don't switch
+  to `gemma-4-31b-it`: we measured 30 to 50 seconds per answer.
+- Keep the retry options from `hello_gemma.py`. On 30 October, about half of single calls
+  failed with "500 INTERNAL"; with 5 retries, 10 of 10 succeeded in 2 to 7 seconds.
+- Store the client in a variable (in Streamlit, create it once with `@st.cache_resource`).
+  `genai.Client().models.generate_content(...)` on one line fails with "client has been
+  closed".
 - Gemma should do something useful for the user each time: explain the numbers in plain
   language, answer a question about the data, or turn figures into advice to act on.
 - Give Gemma the facts it needs in the prompt and tell it to use only those facts. Don't

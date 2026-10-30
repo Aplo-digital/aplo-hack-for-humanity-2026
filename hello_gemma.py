@@ -14,7 +14,10 @@ from google import genai
 from google.genai import types
 
 load_dotenv()                      # reads GEMINI_API_KEY from .env
-client = genai.Client()            # picks the key up from the environment
+client = genai.Client(             # picks the key up from the environment
+    # the API often answers "500 INTERNAL" on a single try; retrying makes it reliable
+    http_options=types.HttpOptions(retry_options=types.HttpRetryOptions(attempts=5, initial_delay=1, max_delay=8)),
+)
 
 response = client.models.generate_content(
     model="gemma-4-26b-a4b-it",    # Google's suggested starting model; gemma-4-31b-it is the bigger one
