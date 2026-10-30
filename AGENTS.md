@@ -21,42 +21,50 @@ changes it, and update that file when they do.
 
 ## Setup (first time on a laptop)
 
-1. Check `python3 --version` is 3.10 or newer. If not, help the person install Python from
-   python.org.
-2. Create a virtual environment in `.venv` and install `requirements.txt` into it. On Windows
-   the activate script is `.venv\Scripts\activate`; on Mac and Linux it is
-   `source .venv/bin/activate`.
+1. Check `node --version` is 20 or newer. If not, help the person install Node from nodejs.org.
+2. Run `npm install`.
 3. If `.env` doesn't exist, copy `sample.env` to `.env`. The person pastes their Gemini key
    into `.env` themselves. Never ask for the key in chat, never print it, never commit it.
-4. Run `python hello_gemma.py` to prove the key and model work.
+4. Run `npm run dev` and open the localhost address it prints.
 
-## The app
+## The app (Pass It On)
 
-- One Streamlit app in `app.py`, run with `streamlit run app.py`. Add helper files only when
-  `app.py` gets hard to read.
-- Use pandas to load data and Plotly for charts and maps. Add a package to
-  `requirements.txt` whenever you start using it.
-- Load data with `@st.cache_data` so the app stays fast.
-- Keep the interface simple: a title, one sentence saying who the app helps, the inputs, then
-  the results.
+A Vite + React 19 + TypeScript web app at the repo root, styled with Tailwind v4 and shadcn/ui
+(base-nova style), adapted from Aplo's figmaplugins.co design system. No login, no database:
+it's an MVP that runs on one laptop.
+
+| Where | What lives there |
+| --- | --- |
+| `src/App.tsx` | The page and its steps: upload, analysing, review, plan, error (one state union) |
+| `src/components/steps/` | One component per step |
+| `src/components/ui/` | shadcn components. Add more with `npx shadcn@latest add <name>`, then check the `cn` import is `@/lib/utils` |
+| `src/components/design-system/` | `TYPE` text scale, `ICON` sizes, `IconBox`. Use these, not ad-hoc classes |
+| `src/styles/globals.css` | Colour tokens, radius, DM Sans. Change colours here, not per component |
+| `src/lib/types.ts` | `Item`, `Category`, `Condition`, `CharityRule`, `Destination` |
+| `src/lib/route.ts` | `routeItems`: where each item goes. Keep it pure and keep `route.test.ts` passing |
+| `data/charities.csv` | Charity rules the team edits in Excel: charity, category, accepted (yes/some), notes, source link |
+| `server/gemma.ts` | Every Gemma call. Shrinks videos with ffmpeg-static first |
+| `vite.config.ts` | Wires `POST /api/analyse` and `POST /api/plan` into the dev server |
+
+Rules:
+- The Gemini key is read on the server only (`loadEnv` in `vite.config.ts`). Never use
+  `import.meta.env` or a `VITE_` variable for it, and never call Gemini from `src/`.
+- The API routes run under `npm run dev` and `npm run preview`. Public hosting would need
+  serverless functions and is out of scope for the MVP.
+- Before saying a change is done: `npm run typecheck && npm test && npm run build`, then load
+  the page and try it.
+- Python files (`hello_gemma.py`, `requirements.txt`, `scripts/fetch_charity_data.py`) are
+  optional tools, not part of the app.
 
 ## Gemma 4 (required for the "Best Use of Gemma 4" challenge)
 
-- Model `gemma-4-26b-a4b-it` through the Gemini API with the `google-genai` SDK. Copy the
-  pattern in `hello_gemma.py`: `load_dotenv()`, a client with retries, and
-  `thinking_level="minimal"`. Without "minimal", answers take 20 to 60 seconds. Don't switch
-  to `gemma-4-31b-it`: we measured 30 to 50 seconds per answer.
-- Keep the retry options from `hello_gemma.py`. On 30 October, about half of single calls
+- Model `gemma-4-26b-a4b-it` through the Gemini API with the `@google/genai` SDK, thinking
+  level minimal. Don't switch to `gemma-4-31b-it`: we measured 30 to 50 seconds per answer.
+- Keep the SDK retry options in `server/gemma.ts`. On 30 October about half of single calls
   failed with "500 INTERNAL"; with 5 retries, 10 of 10 succeeded in 2 to 7 seconds.
-- Store the client in a variable (in Streamlit, create it once with `@st.cache_resource`).
-  `genai.Client().models.generate_content(...)` on one line fails with "client has been
-  closed".
-- Gemma should do something useful for the user each time: explain the numbers in plain
-  language, answer a question about the data, or turn figures into advice to act on.
-- Give Gemma the facts it needs in the prompt and tell it to use only those facts. Don't
-  let it invent numbers.
-- Cache answers per input with `@st.cache_data`. If a call fails, show a friendly message and
-  a "Try again" button; the app must not crash.
+- Send video, not photos: a single photo took 84 to 97 seconds, a shrunk video 15 to 20.
+- Give Gemma only the facts it needs and tell it to use only those. If a call fails, show a
+  friendly message and a "Try again" button; the app must not crash.
 
 ## Data
 
@@ -96,5 +104,5 @@ changes it, and update that file when they do.
 
 ## Done means
 
-The app starts with `streamlit run app.py` with no errors, the main screen loads, and a Gemma
-answer appears. Check this yourself before you say a change is finished.
+`npm run dev` starts with no errors, the page loads, and a test video produces an item list
+and a plan. Check this yourself before you say a change is finished.

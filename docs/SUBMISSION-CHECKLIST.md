@@ -5,7 +5,7 @@ Tick these off about an hour before demos. Your AI assistant can check most of t
 
 ## The app
 
-- [ ] `streamlit run app.py` starts with no errors on a fresh pull
+- [ ] `npm install && npm run dev` starts with no errors on a fresh pull
 - [ ] Gemma answers, and the app shows a friendly message if it can't
 - [ ] Someone who hasn't seen the app can use it without help
 

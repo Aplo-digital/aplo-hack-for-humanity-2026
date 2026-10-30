@@ -30,7 +30,7 @@ Know your theme already?
 
 ## 3. Build the first version
 
-> Build the first version of our app in app.py with Streamlit. It should [describe what a person
+> Add a feature to our Pass It On app (read AGENTS.md first). It should [describe what a person
 > does, for example: type a postcode and see how many homes have solar compared with the SA
 > average]. Use [dataset]. Keep it simple, run it, and tell me how to open it in my browser.
 
